@@ -9,6 +9,7 @@ END_VAR
 VAR_OUTPUT
 	X : REAL; (* Actual output signal *)
 END_VAR
-STCODE
- X := (x2 - x1)*(A - a1)/(a2 - a1) + x1;
-END_STCODE
+IMPLEMENTATION
+	 X := (x2 - x1)*(A - a1)/(a2 - a1) + x1;
+
+END_IMPLEMENTATION

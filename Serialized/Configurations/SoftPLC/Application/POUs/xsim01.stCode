@@ -60,242 +60,242 @@ VAR
 	vDischargedToOtherSystem : REAL; (**)
 	vThreeWayValvePos : REAL; (**)
 END_VAR
-STCODE
-(* Handle the valves *)
-Tank1DrainValve(
-	OpenCmd:= IO.Tank1DrainValveOpenCmd, 
-	CloseCmd:= IO.Tank1DrainValveCloseCmd, 
-	cfgOpeningTime:= T#3S, 
-	cfgClosingTime:= T#3S, 
-	simOpenFail:= FALSE, 
-	simCloseFail:= FALSE, 
-	Opened=> IO.Tank1DrainValveOpened, 
-	Closed=> IO.Tank1DrainValveClosed );
+IMPLEMENTATION
+	(* Handle the valves *)
+	Tank1DrainValve(
+		OpenCmd:= IO.Tank1DrainValveOpenCmd, 
+		CloseCmd:= IO.Tank1DrainValveCloseCmd, 
+		cfgOpeningTime:= T#3S, 
+		cfgClosingTime:= T#3S, 
+		simOpenFail:= FALSE, 
+		simCloseFail:= FALSE, 
+		Opened=> IO.Tank1DrainValveOpened, 
+		Closed=> IO.Tank1DrainValveClosed );
+		
+	Tank2DrainValve(
+		OpenCmd:= IO.Tank2DrainValveOpenCmd, 
+		CloseCmd:= IO.Tank2DrainValveCloseCmd, 
+		cfgOpeningTime:= T#3S, 
+		cfgClosingTime:= T#3S, 
+		simOpenFail:= FALSE, 
+		simCloseFail:= FALSE, 
+		Opened=> IO.Tank2DrainValveOpened, 
+		Closed=> IO.Tank2DrainValveClosed );
 	
-Tank2DrainValve(
-	OpenCmd:= IO.Tank2DrainValveOpenCmd, 
-	CloseCmd:= IO.Tank2DrainValveCloseCmd, 
-	cfgOpeningTime:= T#3S, 
-	cfgClosingTime:= T#3S, 
-	simOpenFail:= FALSE, 
-	simCloseFail:= FALSE, 
-	Opened=> IO.Tank2DrainValveOpened, 
-	Closed=> IO.Tank2DrainValveClosed );
+	Tank3DrainValve(
+		OpenCmd:= IO.Tank3DrainValveOpenCmd, 
+		CloseCmd:= IO.Tank3DrainValveCloseCmd, 
+		cfgOpeningTime:= T#3S, 
+		cfgClosingTime:= T#3S, 
+		simOpenFail:= FALSE, 
+		simCloseFail:= FALSE, 
+		Opened=> IO.Tank3DrainValveOpened, 
+		Closed=> IO.Tank3DrainValveClosed );
+		
+	Tank4DrainValve(
+		OpenCmd:= IO.Tank4DrainValveOpenCmd, 
+		CloseCmd:= IO.Tank4DrainValveCloseCmd, 
+		cfgOpeningTime:= T#3S, 
+		cfgClosingTime:= T#3S, 
+		simOpenFail:= FALSE, 
+		simCloseFail:= FALSE, 
+		Opened=> IO.Tank4DrainValveOpened, 
+		Closed=> IO.Tank4DrainValveClosed );
+		
+	CollectingDrainValve(
+		OpenCmd:= IO.CollectingTankDrainValveOpenCmd, 
+		CloseCmd:= IO.CollectingTankDrainValveCloseCmd, 
+		cfgOpeningTime:= T#3S, 
+		cfgClosingTime:= T#3S, 
+		simOpenFail:= FALSE, 
+		simCloseFail:= FALSE, 
+		Opened=> IO.CollectingTankDrainValveOpened, 
+		Closed=> IO.CollectingTankDrainValveClosed );
+	
+	Tank1FillingValve(
+		OpenCmd:= IO.Tank1FillingValveOpenCmd, 
+		CloseCmd:= IO.Tank1FillingValveCloseCmd, 
+		cfgOpeningTime:= T#3S, 
+		cfgClosingTime:= T#3S, 
+		simOpenFail:= FALSE, 
+		simCloseFail:= FALSE, 
+		Opened=> IO.Tank1FillingValveOpened, 
+		Closed=> IO.Tank1FillingValveClosed );
+		
+	Tank2FillingValve(
+		OpenCmd:= IO.Tank2FillingValveOpenCmd, 
+		CloseCmd:= IO.Tank2FillingValveCloseCmd, 
+		cfgOpeningTime:= T#3S, 
+		cfgClosingTime:= T#3S, 
+		simOpenFail:= FALSE, 
+		simCloseFail:= FALSE, 
+		Opened=> IO.Tank2FillingValveOpened, 
+		Closed=> IO.Tank2FillingValveClosed );
+	
+	Tank3FillingValve(
+		OpenCmd:= IO.Tank3FillingValveOpenCmd, 
+		CloseCmd:= IO.Tank3FillingValveCloseCmd, 
+		cfgOpeningTime:= T#3S, 
+		cfgClosingTime:= T#3S, 
+		simOpenFail:= FALSE, 
+		simCloseFail:= FALSE, 
+		Opened=> IO.Tank3FillingValveOpened, 
+		Closed=> IO.Tank3FillingValveClosed );
+		
+	Tank4FillingValve(
+		OpenCmd:= IO.Tank4FillingValveOpenCmd, 
+		CloseCmd:= IO.Tank4FillingValveCloseCmd, 
+		cfgOpeningTime:= T#3S, 
+		cfgClosingTime:= T#3S, 
+		simOpenFail:= FALSE, 
+		simCloseFail:= FALSE, 
+		Opened=> IO.Tank4FillingValveOpened, 
+		Closed=> IO.Tank4FillingValveClosed );
+		
+	CollectingFillingValve(
+		OpenCmd:= IO.CollectingTankFillingValveOpenCmd, 
+		CloseCmd:= IO.CollectingTankFillingValveCloseCmd, 
+		cfgOpeningTime:= T#3S, 
+		cfgClosingTime:= T#3S, 
+		simOpenFail:= FALSE, 
+		simCloseFail:= FALSE, 
+		Opened=> IO.CollectingTankFillingValveOpened, 
+		Closed=> IO.CollectingTankFillingValveClosed );
+		
+	RecirculationValve(
+		OpenCMD := IO.OpenRecirculationValveCMD,
+		CloseCMD := IO.CloseRecirculationValveCMD,
+		cfgTaskSeq_ms := 20,
+		cfgOpenSpeed_s := 5,
+		cfgCloseSpeed_s:= 5,
+		Position => IO.RecirculationValvePosition);
+		
+	DischargeThreeWayValve(
+		ForwardCMD:= IO.DischargeThreeWayFwdCmd, 
+		BackwardCMD:= IO.DischargeThreeWayBackCmd, 
+		cfgTaskSeq_ms:= 20, 
+		cfgOpenSpeed_s:= 5, 
+		cfgCloseSpeed_s:= 5, 
+		Position=> IO.DischargeThreeWayValvePosition );
+		
+	(* Calculate the system values *)
+	vNoOfDraining := BOOL_TO_DINT(Tank1DrainValve.Opened)
+					+ BOOL_TO_DINT(Tank2DrainValve.Opened)
+					+ BOOL_TO_DINT(Tank3DrainValve.Opened)
+					+ BOOL_TO_DINT(Tank4DrainValve.Opened);
+	
+	vNoOfFilling := BOOL_TO_DINT(Tank1FillingValve.Opened)
+					+ BOOL_TO_DINT(Tank2FillingValve.Opened)
+					+ BOOL_TO_DINT(Tank3FillingValve.Opened)
+					+ BOOL_TO_DINT(Tank4FillingValve.Opened);				
+	(* Handle the pumps *)
+	Pump1Sim(
+		OnCmd:= IO.Pump1StartCmd, 
+		OffCmd:= IO.Pump1StopCmd, 
+		cfgFlowrate:= 2400,
+		SimTrip:= IO.Pump1Running AND RecirculationValve.Position = 0 AND vNoOfFilling = 0,
+		NoWater := CollectingTank.TankLevel_cbm = 0 OR CollectingDrainValve.Closed, 
+		RunStatus=> vPump1RunningDint, 
+		FlowmeterOut=> vPump1FlowRate);
+		IO.Pump1Running:= DINT_TO_BOOL(vPump1RunningDint);
+		
+	Pump2Sim(
+		OnCmd:= IO.Pump2StartCmd, 
+		OffCmd:= IO.Pump2StopCmd, 
+		cfgFlowrate:= 2400,
+		SimTrip:= IO.Pump2Running AND RecirculationValve.Position = 0 AND vNoOfFilling = 0,
+		NoWater := CollectingTank.TankLevel_cbm = 0 OR CollectingDrainValve.Closed,  
+		RunStatus=> vPump2RunningDint, 
+		FlowmeterOut=> vPump2FlowRate);
+		IO.Pump2Running:= DINT_TO_BOOL(vPump2RunningDint);
+					
+	vSystemFlowRate := vPump1FlowRate + vPump2Flowrate;
+	vSystemFlowRateTank1 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank1FillingValve.Opened);
+	vSystemFlowRateTank2 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank2FillingValve.Opened);
+	vSystemFlowRateTank3 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank3FillingValve.Opened);
+	vSystemFlowRateTank4 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank4FillingValve.Opened);
+	vReturnLineFlow := vSystemFlowRate - vSystemFlowRateTank1 - vSystemFlowRateTank2 - vSystemFlowRateTank3 - vSystemFlowRateTank4;
+	
+	IF IO.DischargeThreeWayValvePosition >= -45 AND IO.DischargeThreeWayValvePosition <= 90 THEN
+		MapSignal(x1 := 0, x2 := 1, a1 := -45, a2 := 90, A := IO.DischargeThreeWayValvePosition, X => vThreeWayValvePos);
+	ELSIF IO.DischargeThreeWayValvePosition > 90 THEN
+		MapSignal(x1 := 1, x2 := 0, a1 := 90, a2 := 180, A := IO.DischargeThreeWayValvePosition, X => vThreeWayValvePos);
+	END_IF;
+	
+	vGravityDrainTank1 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank1DrainValve.Opened AND Tank1.TankLevel_pc > 0);
+	vGravityDrainTank2 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank2DrainValve.Opened AND Tank2.TankLevel_pc > 0);
+	vGravityDrainTank3 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank3DrainValve.Opened AND Tank3.TankLevel_pc > 0);
+	vGravityDrainTank4 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank4DrainValve.Opened AND Tank4.TankLevel_pc > 0);
+	//Dischargin possible from -10 to +180
+	// Gravity possible from -180 to 10
+	vDischargedToOtherSystem := (vGravityDrainTank1 +	vGravityDrainTank2 + vGravityDrainTank3 + vGravityDrainTank4) * LIMIT(0,vThreeWayValvePos, 1);
+	vGravityDrainReturnFlow := vGravityDrainTank1 +	vGravityDrainTank2 + vGravityDrainTank3 + vGravityDrainTank4 - vDischargedToOtherSystem;
+	
+	Tank1(
+		cfgTaskCycle:= 20, 
+		cfgLenght:= 10, 
+		cfgWidth:= 10, 
+		cfgHeight:= 5, 
+		cfgStartLevel:= 0, 
+		Inflow1:= vSystemFlowRateTank1,
+		Outflow1:= vGravityDrainTank1,
+		TankLevel_cbm=>vTank1Level_cbm,
+		TankLevel_pc=> IO.Tank1Level_pc);
+		vTank1Name := 'Storage Tank 1';
+		vTank1Nominal := 500;
+	
+	Tank2(
+		cfgTaskCycle:= 20, 
+		cfgLenght:= 5, 
+		cfgWidth:= 5, 
+		cfgHeight:= 5, 
+		cfgStartLevel:= 100, 
+		Inflow1:= vSystemFlowRateTank2, 
+		Outflow1:= vGravityDrainTank2,
+		TankLevel_cbm=>vTank2Level_cbm,
+		TankLevel_pc=> IO.Tank2Level_pc);
+		vTank2Name := 'Storage Tank 2';
+		vTank2Nominal := 125;
+		
+	Tank3(
+		cfgTaskCycle:= 20, 
+		cfgLenght:= 5, 
+		cfgWidth:= 5, 
+		cfgHeight:= 5, 
+		cfgStartLevel:= 100, 
+		Inflow1:= vSystemFlowRateTank3, 
+		Outflow1:= vGravityDrainTank3,
+		TankLevel_cbm=>vTank3Level_cbm,
+		TankLevel_pc=> IO.Tank3Level_pc);
+		vTank3Name := 'Storage Tank 3';
+		vTank3Nominal := 125;
+		
+	Tank4(
+		cfgTaskCycle:= 20, 
+		cfgLenght:= 10, 
+		cfgWidth:= 10, 
+		cfgHeight:= 5, 
+		cfgStartLevel:= 0, 
+		Inflow1:= vSystemFlowRateTank4, 
+		Outflow1:= vGravityDrainTank4,
+		TankLevel_cbm=>vTank4Level_cbm,
+		TankLevel_pc=> IO.Tank4Level_pc);
+		vTank4Name := 'Storage Tank 4';
+		vTank4Nominal := 500;
+	
+	CollectingTank(
+		cfgTaskCycle:= 20, 
+		cfgLenght:= 10, 
+		cfgWidth:= 10, 
+		cfgHeight:= 10, 
+		cfgStartLevel:= 333, 
+		Inflow1:= 5000 * BOOL_TO_REAL(CollectingFillingValve.Opened), 
+		Inflow2:= vGravityDrainReturnFlow,
+		Inflow3:= vReturnLineFlow,
+		Outflow1:= vSystemFlowRate * BOOL_TO_REAL(CollectingDrainValve.Opened),
+		TankLevel_cbm=>vCollectingTankLevel_cbm,
+		TankLevel_pc=> IO.CollectingTankLevel_pc);
+		vCollectingTankName := 'Collecting Tank';
+		vCollectingTankNom := 1000;
 
-Tank3DrainValve(
-	OpenCmd:= IO.Tank3DrainValveOpenCmd, 
-	CloseCmd:= IO.Tank3DrainValveCloseCmd, 
-	cfgOpeningTime:= T#3S, 
-	cfgClosingTime:= T#3S, 
-	simOpenFail:= FALSE, 
-	simCloseFail:= FALSE, 
-	Opened=> IO.Tank3DrainValveOpened, 
-	Closed=> IO.Tank3DrainValveClosed );
-	
-Tank4DrainValve(
-	OpenCmd:= IO.Tank4DrainValveOpenCmd, 
-	CloseCmd:= IO.Tank4DrainValveCloseCmd, 
-	cfgOpeningTime:= T#3S, 
-	cfgClosingTime:= T#3S, 
-	simOpenFail:= FALSE, 
-	simCloseFail:= FALSE, 
-	Opened=> IO.Tank4DrainValveOpened, 
-	Closed=> IO.Tank4DrainValveClosed );
-	
-CollectingDrainValve(
-	OpenCmd:= IO.CollectingTankDrainValveOpenCmd, 
-	CloseCmd:= IO.CollectingTankDrainValveCloseCmd, 
-	cfgOpeningTime:= T#3S, 
-	cfgClosingTime:= T#3S, 
-	simOpenFail:= FALSE, 
-	simCloseFail:= FALSE, 
-	Opened=> IO.CollectingTankDrainValveOpened, 
-	Closed=> IO.CollectingTankDrainValveClosed );
-
-Tank1FillingValve(
-	OpenCmd:= IO.Tank1FillingValveOpenCmd, 
-	CloseCmd:= IO.Tank1FillingValveCloseCmd, 
-	cfgOpeningTime:= T#3S, 
-	cfgClosingTime:= T#3S, 
-	simOpenFail:= FALSE, 
-	simCloseFail:= FALSE, 
-	Opened=> IO.Tank1FillingValveOpened, 
-	Closed=> IO.Tank1FillingValveClosed );
-	
-Tank2FillingValve(
-	OpenCmd:= IO.Tank2FillingValveOpenCmd, 
-	CloseCmd:= IO.Tank2FillingValveCloseCmd, 
-	cfgOpeningTime:= T#3S, 
-	cfgClosingTime:= T#3S, 
-	simOpenFail:= FALSE, 
-	simCloseFail:= FALSE, 
-	Opened=> IO.Tank2FillingValveOpened, 
-	Closed=> IO.Tank2FillingValveClosed );
-
-Tank3FillingValve(
-	OpenCmd:= IO.Tank3FillingValveOpenCmd, 
-	CloseCmd:= IO.Tank3FillingValveCloseCmd, 
-	cfgOpeningTime:= T#3S, 
-	cfgClosingTime:= T#3S, 
-	simOpenFail:= FALSE, 
-	simCloseFail:= FALSE, 
-	Opened=> IO.Tank3FillingValveOpened, 
-	Closed=> IO.Tank3FillingValveClosed );
-	
-Tank4FillingValve(
-	OpenCmd:= IO.Tank4FillingValveOpenCmd, 
-	CloseCmd:= IO.Tank4FillingValveCloseCmd, 
-	cfgOpeningTime:= T#3S, 
-	cfgClosingTime:= T#3S, 
-	simOpenFail:= FALSE, 
-	simCloseFail:= FALSE, 
-	Opened=> IO.Tank4FillingValveOpened, 
-	Closed=> IO.Tank4FillingValveClosed );
-	
-CollectingFillingValve(
-	OpenCmd:= IO.CollectingTankFillingValveOpenCmd, 
-	CloseCmd:= IO.CollectingTankFillingValveCloseCmd, 
-	cfgOpeningTime:= T#3S, 
-	cfgClosingTime:= T#3S, 
-	simOpenFail:= FALSE, 
-	simCloseFail:= FALSE, 
-	Opened=> IO.CollectingTankFillingValveOpened, 
-	Closed=> IO.CollectingTankFillingValveClosed );
-	
-RecirculationValve(
-	OpenCMD := IO.OpenRecirculationValveCMD,
-	CloseCMD := IO.CloseRecirculationValveCMD,
-	cfgTaskSeq_ms := 20,
-	cfgOpenSpeed_s := 5,
-	cfgCloseSpeed_s:= 5,
-	Position => IO.RecirculationValvePosition);
-	
-DischargeThreeWayValve(
-	ForwardCMD:= IO.DischargeThreeWayFwdCmd, 
-	BackwardCMD:= IO.DischargeThreeWayBackCmd, 
-	cfgTaskSeq_ms:= 20, 
-	cfgOpenSpeed_s:= 5, 
-	cfgCloseSpeed_s:= 5, 
-	Position=> IO.DischargeThreeWayValvePosition );
-	
-(* Calculate the system values *)
-vNoOfDraining := BOOL_TO_DINT(Tank1DrainValve.Opened)
-				+ BOOL_TO_DINT(Tank2DrainValve.Opened)
-				+ BOOL_TO_DINT(Tank3DrainValve.Opened)
-				+ BOOL_TO_DINT(Tank4DrainValve.Opened);
-
-vNoOfFilling := BOOL_TO_DINT(Tank1FillingValve.Opened)
-				+ BOOL_TO_DINT(Tank2FillingValve.Opened)
-				+ BOOL_TO_DINT(Tank3FillingValve.Opened)
-				+ BOOL_TO_DINT(Tank4FillingValve.Opened);				
-(* Handle the pumps *)
-Pump1Sim(
-	OnCmd:= IO.Pump1StartCmd, 
-	OffCmd:= IO.Pump1StopCmd, 
-	cfgFlowrate:= 2400,
-	SimTrip:= IO.Pump1Running AND RecirculationValve.Position = 0 AND vNoOfFilling = 0,
-	NoWater := CollectingTank.TankLevel_cbm = 0 OR CollectingDrainValve.Closed, 
-	RunStatus=> vPump1RunningDint, 
-	FlowmeterOut=> vPump1FlowRate);
-	IO.Pump1Running:= DINT_TO_BOOL(vPump1RunningDint);
-	
-Pump2Sim(
-	OnCmd:= IO.Pump2StartCmd, 
-	OffCmd:= IO.Pump2StopCmd, 
-	cfgFlowrate:= 2400,
-	SimTrip:= IO.Pump2Running AND RecirculationValve.Position = 0 AND vNoOfFilling = 0,
-	NoWater := CollectingTank.TankLevel_cbm = 0 OR CollectingDrainValve.Closed,  
-	RunStatus=> vPump2RunningDint, 
-	FlowmeterOut=> vPump2FlowRate);
-	IO.Pump2Running:= DINT_TO_BOOL(vPump2RunningDint);
-				
-vSystemFlowRate := vPump1FlowRate + vPump2Flowrate;
-vSystemFlowRateTank1 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank1FillingValve.Opened);
-vSystemFlowRateTank2 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank2FillingValve.Opened);
-vSystemFlowRateTank3 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank3FillingValve.Opened);
-vSystemFlowRateTank4 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank4FillingValve.Opened);
-vReturnLineFlow := vSystemFlowRate - vSystemFlowRateTank1 - vSystemFlowRateTank2 - vSystemFlowRateTank3 - vSystemFlowRateTank4;
-
-IF IO.DischargeThreeWayValvePosition >= -45 AND IO.DischargeThreeWayValvePosition <= 90 THEN
-	MapSignal(x1 := 0, x2 := 1, a1 := -45, a2 := 90, A := IO.DischargeThreeWayValvePosition, X => vThreeWayValvePos);
-ELSIF IO.DischargeThreeWayValvePosition > 90 THEN
-	MapSignal(x1 := 1, x2 := 0, a1 := 90, a2 := 180, A := IO.DischargeThreeWayValvePosition, X => vThreeWayValvePos);
-END_IF;
-
-vGravityDrainTank1 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank1DrainValve.Opened AND Tank1.TankLevel_pc > 0);
-vGravityDrainTank2 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank2DrainValve.Opened AND Tank2.TankLevel_pc > 0);
-vGravityDrainTank3 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank3DrainValve.Opened AND Tank3.TankLevel_pc > 0);
-vGravityDrainTank4 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank4DrainValve.Opened AND Tank4.TankLevel_pc > 0);
-//Dischargin possible from -10 to +180
-// Gravity possible from -180 to 10
-vDischargedToOtherSystem := (vGravityDrainTank1 +	vGravityDrainTank2 + vGravityDrainTank3 + vGravityDrainTank4) * LIMIT(0,vThreeWayValvePos, 1);
-vGravityDrainReturnFlow := vGravityDrainTank1 +	vGravityDrainTank2 + vGravityDrainTank3 + vGravityDrainTank4 - vDischargedToOtherSystem;
-
-Tank1(
-	cfgTaskCycle:= 20, 
-	cfgLenght:= 10, 
-	cfgWidth:= 10, 
-	cfgHeight:= 5, 
-	cfgStartLevel:= 0, 
-	Inflow1:= vSystemFlowRateTank1,
-	Outflow1:= vGravityDrainTank1,
-	TankLevel_cbm=>vTank1Level_cbm,
-	TankLevel_pc=> IO.Tank1Level_pc);
-	vTank1Name := 'Storage Tank 1';
-	vTank1Nominal := 500;
-
-Tank2(
-	cfgTaskCycle:= 20, 
-	cfgLenght:= 5, 
-	cfgWidth:= 5, 
-	cfgHeight:= 5, 
-	cfgStartLevel:= 100, 
-	Inflow1:= vSystemFlowRateTank2, 
-	Outflow1:= vGravityDrainTank2,
-	TankLevel_cbm=>vTank2Level_cbm,
-	TankLevel_pc=> IO.Tank2Level_pc);
-	vTank2Name := 'Storage Tank 2';
-	vTank2Nominal := 125;
-	
-Tank3(
-	cfgTaskCycle:= 20, 
-	cfgLenght:= 5, 
-	cfgWidth:= 5, 
-	cfgHeight:= 5, 
-	cfgStartLevel:= 100, 
-	Inflow1:= vSystemFlowRateTank3, 
-	Outflow1:= vGravityDrainTank3,
-	TankLevel_cbm=>vTank3Level_cbm,
-	TankLevel_pc=> IO.Tank3Level_pc);
-	vTank3Name := 'Storage Tank 3';
-	vTank3Nominal := 125;
-	
-Tank4(
-	cfgTaskCycle:= 20, 
-	cfgLenght:= 10, 
-	cfgWidth:= 10, 
-	cfgHeight:= 5, 
-	cfgStartLevel:= 0, 
-	Inflow1:= vSystemFlowRateTank4, 
-	Outflow1:= vGravityDrainTank4,
-	TankLevel_cbm=>vTank4Level_cbm,
-	TankLevel_pc=> IO.Tank4Level_pc);
-	vTank4Name := 'Storage Tank 4';
-	vTank4Nominal := 500;
-
-CollectingTank(
-	cfgTaskCycle:= 20, 
-	cfgLenght:= 10, 
-	cfgWidth:= 10, 
-	cfgHeight:= 10, 
-	cfgStartLevel:= 333, 
-	Inflow1:= 5000 * BOOL_TO_REAL(CollectingFillingValve.Opened), 
-	Inflow2:= vGravityDrainReturnFlow,
-	Inflow3:= vReturnLineFlow,
-	Outflow1:= vSystemFlowRate * BOOL_TO_REAL(CollectingDrainValve.Opened),
-	TankLevel_cbm=>vCollectingTankLevel_cbm,
-	TankLevel_pc=> IO.CollectingTankLevel_pc);
-	vCollectingTankName := 'Collecting Tank';
-	vCollectingTankNom := 1000;
-
-END_STCODE
+END_IMPLEMENTATION

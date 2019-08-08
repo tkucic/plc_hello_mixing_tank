@@ -19,30 +19,31 @@ VAR
 	vSetManCmdOld : BOOL; (**)
 	vErrorStateActive : BOOL; (**)
 END_VAR
-STCODE
-// Determine control position
-IF (vControlPos = 0) AND SetAutoCmd AND NOT vSetAutoCmdOld THEN
-	vControlPos := 1;
-END_IF
-IF (vControlPos = 1) AND SetManCmd AND NOT vSetManCmdOld THEN
-	vControlPos := 0;
-END_IF
-
-IF vErrorStateActive THEN
-	vControlPos := 0;
-END_IF
-
-CASE vControlPos OF
-	0: (* Manual *)
-	qCloseCmd := CloseManCmd AND NOT Closed;
-	qOpenCmd := OpenManCmd AND NOT Opened;
+IMPLEMENTATION
+	// Determine control position
+	IF (vControlPos = 0) AND SetAutoCmd AND NOT vSetAutoCmdOld THEN
+		vControlPos := 1;
+	END_IF
+	IF (vControlPos = 1) AND SetManCmd AND NOT vSetManCmdOld THEN
+		vControlPos := 0;
+	END_IF
 	
-	1: (* Auto *)
-	qCloseCmd := CloseAutoCmd AND NOT Closed;
-	qOpenCmd := OpenAutoCmd AND NOT Opened;
-END_CASE
+	IF vErrorStateActive THEN
+		vControlPos := 0;
+	END_IF
+	
+	CASE vControlPos OF
+		0: (* Manual *)
+		qCloseCmd := CloseManCmd AND NOT Closed;
+		qOpenCmd := OpenManCmd AND NOT Opened;
+		
+		1: (* Auto *)
+		qCloseCmd := CloseAutoCmd AND NOT Closed;
+		qOpenCmd := OpenAutoCmd AND NOT Opened;
+	END_CASE
+	
+	// Memory
+	vSetAutoCmdOld := SetAutoCmd;
+	vSetManCmdOld :=  SetManCmd;
 
-// Memory
-vSetAutoCmdOld := SetAutoCmd;
-vSetManCmdOld :=  SetManCmd;
-END_STCODE
+END_IMPLEMENTATION
