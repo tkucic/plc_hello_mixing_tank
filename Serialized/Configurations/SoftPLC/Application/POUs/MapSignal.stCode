@@ -1,0 +1,14 @@
+FUNCTION_BLOCK MapSignal
+VAR_INPUT
+	x1 : REAL; (* Minimum range of output signal *)
+	x2 : REAL; (* Maximum range of output signal *)
+	a1 : REAL; (* Minimum range of input signal *)
+	a2 : REAL; (* Maximum range of input signal *)
+	A : REAL; (* Actual input signal *)
+END_VAR
+VAR_OUTPUT
+	X : REAL; (* Actual output signal *)
+END_VAR
+STCODE
+ X := (x2 - x1)*(A - a1)/(a2 - a1) + x1;
+END_STCODE

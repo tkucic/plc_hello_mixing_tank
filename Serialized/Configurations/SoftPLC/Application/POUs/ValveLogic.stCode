@@ -1,0 +1,10 @@
+PROGRAM ValveLogic
+VAR
+	ON : BOOL; (**)
+	TripSeverity : INT; (**)
+	Voltage : INT := 110; (**)
+END_VAR
+STCODE
+ON := TripSeverity = 1 AND Voltage <= 100 OR ON AND TripSeverity = 1;
+
+END_STCODE

@@ -1,0 +1,48 @@
+FUNCTION_BLOCK classFlipFlopCtrl
+VAR_INPUT
+	SetAutoCmd : BOOL := FALSE; (**)
+	SetManCmd : BOOL := FALSE; (**)
+	CloseManCmd : BOOL := FALSE; (**)
+	OpenManCmd : BOOL := FALSE; (**)
+	CloseAutoCmd : BOOL := FALSE; (**)
+	OpenAutoCmd : BOOL := FALSE; (**)
+	Opened : BOOL := FALSE; (**)
+	Closed : BOOL := FALSE; (**)
+END_VAR
+VAR_OUTPUT
+	qCloseCmd : BOOL := FALSE; (**)
+	qOpenCmd : BOOL := FALSE; (**)
+END_VAR
+VAR
+	vSetAutoCmdOld : BOOL; (**)
+	vControlPos : INT := 0; (**)
+	vSetManCmdOld : BOOL; (**)
+	vErrorStateActive : BOOL; (**)
+END_VAR
+STCODE
+// Determine control position
+IF (vControlPos = 0) AND SetAutoCmd AND NOT vSetAutoCmdOld THEN
+	vControlPos := 1;
+END_IF
+IF (vControlPos = 1) AND SetManCmd AND NOT vSetManCmdOld THEN
+	vControlPos := 0;
+END_IF
+
+IF vErrorStateActive THEN
+	vControlPos := 0;
+END_IF
+
+CASE vControlPos OF
+	0: (* Manual *)
+	qCloseCmd := CloseManCmd AND NOT Closed;
+	qOpenCmd := OpenManCmd AND NOT Opened;
+	
+	1: (* Auto *)
+	qCloseCmd := CloseAutoCmd AND NOT Closed;
+	qOpenCmd := OpenAutoCmd AND NOT Opened;
+END_CASE
+
+// Memory
+vSetAutoCmdOld := SetAutoCmd;
+vSetManCmdOld :=  SetManCmd;
+END_STCODE

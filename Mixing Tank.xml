@@ -1,0 +1,1642 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP14 Patch 1" creationDateTime="2019-07-15T20:34:40.4571337" />
+  <contentHeader name="01. MixingTank" version="1.0" modificationDateTime="2019-07-15T20:34:40.3022281" organization="TK Automation" author="Toni Kucic">
+    <Comment>This is a simulated mixing of two mediums in a tank. To see the full function description refer to the function description document.</Comment>
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Author" type="string">Toni Kucic</property>
+          <property name="Company" type="string">TK Automation</property>
+          <property name="Description" type="string">This is a simulated mixing of two mediums in a tank. To see the full function description refer to the function description document.</property>
+          <property name="Project" type="string">Mixing Tank</property>
+          <property name="Title" type="string">01. MixingTank</property>
+          <property name="Version" type="version">1.0</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous />
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="SoftPLC">
+        <resource name="Application">
+          <task name="xsim01" interval="PT0.02S" priority="1">
+            <pouInstance name="xsim01" typeName="">
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+              </documentation>
+            </pouInstance>
+            <addData>
+              <data name="http://www.3s-software.com/plcopenxml/tasksettings" handleUnknown="implementation">
+                <TaskSettings KindOfTask="Cyclic" Interval="t#20ms" IntervalUnit="ms" WithinSPSTimeSlicing="true">
+                  <Watchdog Enabled="false" TimeUnit="ms" Sensitivity="1" />
+                </TaskSettings>
+              </data>
+            </addData>
+          </task>
+          <task name="VISU_TASK" interval="PT0.05S" priority="31">
+            <pouInstance name="VisuElems.Visu_Prg" typeName="">
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+              </documentation>
+            </pouInstance>
+            <addData>
+              <data name="http://www.3s-software.com/plcopenxml/tasksettings" handleUnknown="implementation">
+                <TaskSettings KindOfTask="Cyclic" Interval="50" IntervalUnit="ms" WithinSPSTimeSlicing="true">
+                  <Watchdog Enabled="false" TimeUnit="ms" />
+                </TaskSettings>
+              </data>
+            </addData>
+          </task>
+          <task name="xc01_Task" interval="PT0.05S" priority="1">
+            <pouInstance name="MainProgram" typeName="">
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+              </documentation>
+            </pouInstance>
+            <pouInstance name="ValveLogic" typeName="">
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+              </documentation>
+            </pouInstance>
+            <addData>
+              <data name="http://www.3s-software.com/plcopenxml/tasksettings" handleUnknown="implementation">
+                <TaskSettings KindOfTask="Cyclic" Interval="t#50ms" WithinSPSTimeSlicing="true">
+                  <Watchdog Enabled="false" TimeUnit="ms" Sensitivity="1" />
+                </TaskSettings>
+              </data>
+            </addData>
+          </task>
+          <globalVars name="IO">
+            <variable name="Pump1StartCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">	    DIGITAL OUTPUT	Naredba automatike za start pumpe 1 </xhtml>
+              </documentation>
+            </variable>
+            <variable name="Pump1StopCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">	    DIGITAL OUTPUT	Naredba automatike za stop pumpe 1 </xhtml>
+              </documentation>
+            </variable>
+            <variable name="Pump1Running">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">	    DIGITAL INPUT	Indikacija pokrenutog status pumpe 1 </xhtml>
+              </documentation>
+            </variable>
+            <variable name="Pump2StartCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">	    DIGITAL OUTPUT	Naredba automatike za start pumpe 2 </xhtml>
+              </documentation>
+            </variable>
+            <variable name="Pump2StopCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">	    DIGITAL OUTPUT	Naredba automatike za stop pumpe 2 </xhtml>
+              </documentation>
+            </variable>
+            <variable name="Pump2Running">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">	    DIGITAL INPUT	Indikacija pokrenutog status pumpe 2 </xhtml>
+              </documentation>
+            </variable>
+            <variable name="Tank1Level_pc">
+              <type>
+                <REAL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">	    	REAL VALUE	Trenutna razina tanka u postocima </xhtml>
+              </documentation>
+            </variable>
+            <variable name="Tank2Level_pc">
+              <type>
+                <REAL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">	    	REAL VALUE	Trenutna razina tanka u postocima </xhtml>
+              </documentation>
+            </variable>
+            <variable name="Tank3Level_pc">
+              <type>
+                <REAL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">	    	REAL VALUE	Trenutna razina tanka u postocima </xhtml>
+              </documentation>
+            </variable>
+            <variable name="Tank4Level_pc">
+              <type>
+                <REAL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">	    	REAL VALUE	Trenutna razina tanka u postocima </xhtml>
+              </documentation>
+            </variable>
+            <variable name="CollectingTankLevel_pc">
+              <type>
+                <REAL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">	    	REAL VALUE	Trenutna razina tanka u postocima </xhtml>
+              </documentation>
+            </variable>
+            <variable name="Tank1DrainValveOpenCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank1DrainValveCloseCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank1DrainValveOpened">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank1DrainValveClosed">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank2DrainValveOpenCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank2DrainValveCloseCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank2DrainValveOpened">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank2DrainValveClosed">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank3DrainValveOpenCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank3DrainValveCloseCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank3DrainValveOpened">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank3DrainValveClosed">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank4DrainValveOpenCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank4DrainValveCloseCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank4DrainValveOpened">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank4DrainValveClosed">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="CollectingTankDrainValveOpenCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="CollectingTankDrainValveCloseCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="CollectingTankDrainValveOpened">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="CollectingTankDrainValveClosed">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank1FillingValveOpenCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank1FillingValveCloseCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank1FillingValveOpened">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank1FillingValveClosed">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank2FillingValveOpenCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank2FillingValveCloseCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank2FillingValveOpened">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank2FillingValveClosed">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank3FillingValveOpenCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank3FillingValveCloseCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank3FillingValveOpened">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank3FillingValveClosed">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank4FillingValveOpenCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank4FillingValveCloseCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank4FillingValveOpened">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="Tank4FillingValveClosed">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="CollectingTankFillingValveOpenCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="CollectingTankFillingValveCloseCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="CollectingTankFillingValveOpened">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="CollectingTankFillingValveClosed">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="OpenRecirculationValveCMD">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="CloseRecirculationValveCMD">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="RecirculationValvePosition">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="DischargeThreeWayFwdCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="DischargeThreeWayBackCmd">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="DischargeThreeWayValvePosition">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <addData>
+              <data name="http://www.3s-software.com/plcopenxml/attributes" handleUnknown="implementation">
+                <Attributes>
+                  <Attribute Name="qualified_only" Value="" />
+                </Attributes>
+              </data>
+            </addData>
+          </globalVars>
+          <addData>
+            <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
+              <pou name="MainProgram" pouType="program">
+                <interface>
+                  <localVars>
+                    <variable name="Tank1FillingValveController">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">ValveControllers</xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="Tank2FillingValveController">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                    </variable>
+                    <variable name="Tank3FillingValveController">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                    </variable>
+                    <variable name="Tank4FillingValveController">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                    </variable>
+                    <variable name="Tank1DrainValveController">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                    </variable>
+                    <variable name="Tank2DrainValveController">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                    </variable>
+                    <variable name="Tank3DrainValveController">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                    </variable>
+                    <variable name="Tank4DrainValveController">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                    </variable>
+                    <variable name="CollectionTankFillingValveController">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                    </variable>
+                    <variable name="CollectionTankDrainValveController">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                    </variable>
+                    <variable name="Tank1Control">
+                      <type>
+                        <derived name="TankControl" />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Tank controllers</xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="Tank2Control">
+                      <type>
+                        <derived name="TankControl" />
+                      </type>
+                    </variable>
+                    <variable name="Tank3Control">
+                      <type>
+                        <derived name="TankControl" />
+                      </type>
+                    </variable>
+                    <variable name="Tank4Control">
+                      <type>
+                        <derived name="TankControl" />
+                      </type>
+                    </variable>
+                    <variable name="CollectionTankControl">
+                      <type>
+                        <derived name="TankControl" />
+                      </type>
+                    </variable>
+                    <variable name="Pump1Controller">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Pump controllers</xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="Pump2Controller">
+                      <type>
+                        <derived name="classFlipFlopCtrl" />
+                      </type>
+                    </variable>
+                    <variable name="vRecirculationSP">
+                      <type>
+                        <REAL />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Support variables</xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="vNoOfFilling">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vLevelRef">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vFillingRef">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vMaxTankLevel">
+                      <type>
+                        <REAL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="85" />
+                      </initialValue>
+                    </variable>
+                    <variable name="CollectingTankFillingValveOpene">
+                      <type>
+                        <INT />
+                      </type>
+                    </variable>
+                  </localVars>
+                  <localVars constant="true">
+                    <variable name="cTank1Capacity">
+                      <type>
+                        <REAL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="125" />
+                      </initialValue>
+                    </variable>
+                    <variable name="cTank2Capacity">
+                      <type>
+                        <REAL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="125" />
+                      </initialValue>
+                    </variable>
+                    <variable name="cTank3Capacity">
+                      <type>
+                        <REAL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="125" />
+                      </initialValue>
+                    </variable>
+                    <variable name="cTank4Capacity">
+                      <type>
+                        <REAL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="125" />
+                      </initialValue>
+                    </variable>
+                    <variable name="cMaxTankLevel">
+                      <type>
+                        <REAL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="80" />
+                      </initialValue>
+                    </variable>
+                    <variable name="cMinStorageTankLevel">
+                      <type>
+                        <REAL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="20" />
+                      </initialValue>
+                    </variable>
+                  </localVars>
+                </interface>
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">Pump1Controller(
+	CloseAutoCmd := NOT IO.Pump1Running,
+	OpenAutoCmd := NOT IO.CollectingTankDrainValveOpened OR IO.CollectingTankLevel_pc &lt; 10,
+	Opened := NOT IO.Pump1Running,
+	Closed := IO.Pump1Running,
+	qCloseCmd =&gt; IO.Pump1StartCmd,
+	qOpenCmd =&gt; IO.Pump1StopCmd);
+
+Pump2Controller(
+	CloseAutoCmd := NOT IO.Pump2Running,
+	OpenAutoCmd := NOT IO.CollectingTankDrainValveOpened OR IO.CollectingTankLevel_pc &lt; 10,
+	Opened := NOT IO.Pump2Running,
+	Closed := IO.Pump2Running,
+	qCloseCmd =&gt; IO.Pump2StartCmd,
+	qOpenCmd =&gt; IO.Pump2StopCmd);
+	
+vLevelRef := ((0.01 * IO.Tank1Level_pc * cTank1Capacity 
+		   + 0.01 * IO.Tank2Level_pc * cTank2Capacity 
+		   + 0.01 * IO.Tank3Level_pc * cTank3Capacity 
+		   + 0.01 * IO.Tank4Level_pc * cTank4Capacity)
+		/(cTank1Capacity + cTank2Capacity + cTank3Capacity + cTank4Capacity));
+
+vFillingRef := vMaxTankLevel - vLevelRef*100;
+
+vNoOfFilling := BOOL_TO_REAL(IO.Tank1FillingValveOpened)
+			+	BOOL_TO_REAL(IO.Tank2FillingValveOpened)
+			+ 	BOOL_TO_REAL(IO.Tank3FillingValveOpened)
+			+ 	BOOL_TO_REAL(IO.Tank4FillingValveOpened);	   
+		   
+Tank1Control(
+	Tanklevel_pc := IO.Tank1Level_pc,
+	LevelRef := vLevelRef * 100 + vFillingRef);
+	
+Tank2Control(
+	Tanklevel_pc := IO.Tank2Level_pc,
+	LevelRef := vLevelRef * 100 + vFillingRef);	
+
+Tank3Control(
+	Tanklevel_pc := IO.Tank3Level_pc,
+	LevelRef := vLevelRef * 100 + vFillingRef);
+	
+Tank4Control(
+	Tanklevel_pc := IO.Tank4Level_pc,
+	LevelRef := vLevelRef * 100 + vFillingRef);
+	
+CollectionTankControl(
+	Tanklevel_pc := IO.CollectingTankLevel_pc,
+	LevelRef := IO.CollectingTankLevel_pc);
+	
+(* Commands to valves *)
+Tank1FillingValveController(
+	CloseAutoCmd := NOT Tank1Control.Fill,
+	OpenAutoCmd := Tank1Control.Fill,
+	Opened := IO.Tank1FillingValveOpened,
+	Closed := IO.Tank1FillingValveClosed,
+	qCloseCmd =&gt; IO.Tank1FillingValveCloseCmd,
+	qOpenCmd =&gt; IO.Tank1FillingValveOpenCmd);
+	
+Tank2FillingValveController(
+	CloseAutoCmd := NOT Tank2Control.Fill,
+	OpenAutoCmd := Tank2Control.Fill,
+	Opened := IO.Tank2FillingValveOpened,
+	Closed := IO.Tank2FillingValveClosed,
+	qCloseCmd =&gt; IO.Tank2FillingValveCloseCmd,
+	qOpenCmd =&gt; IO.Tank2FillingValveOpenCmd);
+
+Tank3FillingValveController(
+	CloseAutoCmd := NOT Tank3Control.Fill,
+	OpenAutoCmd := Tank3Control.Fill,
+	Opened := IO.Tank3FillingValveOpened,
+	Closed := IO.Tank3FillingValveClosed,
+	qCloseCmd =&gt; IO.Tank3FillingValveCloseCmd,
+	qOpenCmd =&gt; IO.Tank3FillingValveOpenCmd);
+	
+Tank4FillingValveController(
+	CloseAutoCmd := NOT Tank4Control.Fill,
+	OpenAutoCmd := Tank4Control.Fill,
+	Opened := IO.Tank4FillingValveOpened,
+	Closed := IO.Tank4FillingValveClosed,
+	qCloseCmd =&gt; IO.Tank4FillingValveCloseCmd,
+	qOpenCmd =&gt; IO.Tank4FillingValveOpenCmd);
+
+Tank1DrainValveController(
+	CloseAutoCmd := NOT Tank1Control.Drain,
+	OpenAutoCmd := Tank1Control.Drain,
+	Opened := IO.Tank1DrainValveOpened,
+	Closed := IO.Tank1DrainValveClosed,
+	qCloseCmd =&gt; IO.Tank1DrainValveCloseCmd,
+	qOpenCmd =&gt; IO.Tank1DrainValveOpenCmd);
+	
+Tank2DrainValveController(
+	CloseAutoCmd := NOT Tank2Control.Drain,
+	OpenAutoCmd := Tank2Control.Drain,
+	Opened := IO.Tank2DrainValveOpened,
+	Closed := IO.Tank2DrainValveClosed,
+	qCloseCmd =&gt; IO.Tank2DrainValveCloseCmd,
+	qOpenCmd =&gt; IO.Tank2DrainValveOpenCmd);
+
+Tank3DrainValveController(
+	CloseAutoCmd := NOT Tank3Control.Drain,
+	OpenAutoCmd := Tank3Control.Drain,
+	Opened := IO.Tank3DrainValveOpened,
+	Closed := IO.Tank3DrainValveClosed,
+	qCloseCmd =&gt; IO.Tank3DrainValveCloseCmd,
+	qOpenCmd =&gt; IO.Tank3DrainValveOpenCmd);
+	
+Tank4DrainValveController(
+	CloseAutoCmd := NOT Tank4Control.Drain,
+	OpenAutoCmd := Tank4Control.Drain,
+	Opened := IO.Tank4DrainValveOpened,
+	Closed := IO.Tank4DrainValveClosed,
+	qCloseCmd =&gt; IO.Tank4DrainValveCloseCmd,
+	qOpenCmd =&gt; IO.Tank4DrainValveOpenCmd);
+	
+CollectionTankDrainValveController(
+	CloseAutoCmd := NOT CollectionTankControl.Fill,
+	OpenAutoCmd := CollectionTankControl.Fill,
+	Opened := IO.CollectingTankDrainValveOpened,
+	Closed := IO.CollectingTankDrainValveClosed,
+	qCloseCmd =&gt; IO.CollectingTankDrainValveCloseCmd,
+	qOpenCmd =&gt; IO.CollectingTankDrainValveOpenCmd);
+	
+CollectionTankFillingValveController(
+	CloseAutoCmd := NOT CollectionTankControl.Drain,
+	OpenAutoCmd := CollectionTankControl.Drain,
+	Opened := IO.CollectingTankFillingValveOpened,
+	Closed := IO.CollectingTankFillingValveClosed,
+	qCloseCmd =&gt; IO.CollectingTankFillingValveCloseCmd,
+	qOpenCmd =&gt; IO.CollectingTankFillingValveOpenCmd);
+
+	
+vRecirculationSP := 100 - (25 * vNoOfFilling);
+
+(* Set up the recirculation valve *)
+IF IO.RecirculationValvePosition &lt; vRecirculationSP THEN
+	IO.OpenRecirculationValveCMD := TRUE;
+	IO.CloseRecirculationValveCMD := FALSE;
+ELSIF IO.RecirculationValvePosition &gt; vRecirculationSP THEN
+	IO.OpenRecirculationValveCMD := FALSE;
+	IO.CloseRecirculationValveCMD := TRUE;
+ELSE
+	IO.OpenRecirculationValveCMD := FALSE;
+	IO.CloseRecirculationValveCMD := FALSE;
+END_IF</xhtml>
+                  </ST>
+                </body>
+                <addData />
+              </pou>
+            </data>
+            <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
+              <pou name="xsim01" pouType="program">
+                <interface>
+                  <localVars>
+                    <variable name="Tank1">
+                      <type>
+                        <derived name="Tank_Model" />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Simulator and graphics
+ Define objects </xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="Tank2">
+                      <type>
+                        <derived name="Tank_Model" />
+                      </type>
+                    </variable>
+                    <variable name="Tank3">
+                      <type>
+                        <derived name="Tank_Model" />
+                      </type>
+                    </variable>
+                    <variable name="Tank4">
+                      <type>
+                        <derived name="Tank_Model" />
+                      </type>
+                    </variable>
+                    <variable name="CollectingTank">
+                      <type>
+                        <derived name="Tank_Model" />
+                      </type>
+                    </variable>
+                    <variable name="MapSignal">
+                      <type>
+                        <derived name="MapSignal" />
+                      </type>
+                    </variable>
+                    <variable name="Pump1Sim">
+                      <type>
+                        <derived name="Pump_Model" />
+                      </type>
+                    </variable>
+                    <variable name="Pump2Sim">
+                      <type>
+                        <derived name="Pump_Model" />
+                      </type>
+                    </variable>
+                    <variable name="Tank1DrainValve">
+                      <type>
+                        <derived name="OnOffValve_model" />
+                      </type>
+                    </variable>
+                    <variable name="Tank2DrainValve">
+                      <type>
+                        <derived name="OnOffValve_model" />
+                      </type>
+                    </variable>
+                    <variable name="Tank3DrainValve">
+                      <type>
+                        <derived name="OnOffValve_model" />
+                      </type>
+                    </variable>
+                    <variable name="Tank4DrainValve">
+                      <type>
+                        <derived name="OnOffValve_model" />
+                      </type>
+                    </variable>
+                    <variable name="CollectingDrainValve">
+                      <type>
+                        <derived name="OnOffValve_model" />
+                      </type>
+                    </variable>
+                    <variable name="Tank1FillingValve">
+                      <type>
+                        <derived name="OnOffValve_model" />
+                      </type>
+                    </variable>
+                    <variable name="Tank2FillingValve">
+                      <type>
+                        <derived name="OnOffValve_model" />
+                      </type>
+                    </variable>
+                    <variable name="Tank3FillingValve">
+                      <type>
+                        <derived name="OnOffValve_model" />
+                      </type>
+                    </variable>
+                    <variable name="Tank4FillingValve">
+                      <type>
+                        <derived name="OnOffValve_model" />
+                      </type>
+                    </variable>
+                    <variable name="CollectingFillingValve">
+                      <type>
+                        <derived name="OnOffValve_model" />
+                      </type>
+                    </variable>
+                    <variable name="RecirculationValve">
+                      <type>
+                        <derived name="TwoWayIncrementValve" />
+                      </type>
+                    </variable>
+                    <variable name="vPump1RunningDint">
+                      <type>
+                        <DINT />
+                      </type>
+                    </variable>
+                    <variable name="vPump2RunningDint">
+                      <type>
+                        <DINT />
+                      </type>
+                    </variable>
+                    <variable name="vPump1FlowRate">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vPump2FlowRate">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vCollectingTankName">
+                      <type>
+                        <string />
+                      </type>
+                    </variable>
+                    <variable name="vTank1Name">
+                      <type>
+                        <string />
+                      </type>
+                    </variable>
+                    <variable name="vTank1Nominal">
+                      <type>
+                        <INT />
+                      </type>
+                    </variable>
+                    <variable name="vTank2Nominal">
+                      <type>
+                        <INT />
+                      </type>
+                    </variable>
+                    <variable name="vTank2Name">
+                      <type>
+                        <string />
+                      </type>
+                    </variable>
+                    <variable name="vTank3Name">
+                      <type>
+                        <string />
+                      </type>
+                    </variable>
+                    <variable name="vTank3Nominal">
+                      <type>
+                        <INT />
+                      </type>
+                    </variable>
+                    <variable name="vTank4Name">
+                      <type>
+                        <string />
+                      </type>
+                    </variable>
+                    <variable name="vTank4Nominal">
+                      <type>
+                        <INT />
+                      </type>
+                    </variable>
+                    <variable name="vCollectingTankNom">
+                      <type>
+                        <INT />
+                      </type>
+                    </variable>
+                    <variable name="vCollectingTankLevel_cbm">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vTank1Level_cbm">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vTank4Level_cbm">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vTank3Level_cbm">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vTank2">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vTank2Level_cbm">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vSystemFlowRate">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vGravityDrain">
+                      <type>
+                        <REAL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="2500" />
+                      </initialValue>
+                    </variable>
+                    <variable name="vGravityFlowPerTank">
+                      <type>
+                        <INT />
+                      </type>
+                    </variable>
+                    <variable name="vNoOfDraining">
+                      <type>
+                        <DINT />
+                      </type>
+                    </variable>
+                    <variable name="vGravityDrainReturnFlow">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vSystemFlowRatePerTank">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vNoOfFilling">
+                      <type>
+                        <DINT />
+                      </type>
+                    </variable>
+                    <variable name="vReturnLineFlow">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vSystemFlowRateTank1">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vSystemFlowRateTank2">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vSystemFlowRateTank3">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vSystemFlowRateTank4">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vGravityDrainTank1">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vGravityDrainTank2">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vGravityDrainTank3">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vGravityDrainTank4">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="DischargeThreeWayValve">
+                      <type>
+                        <derived name="ThreeWayIncrementValve" />
+                      </type>
+                    </variable>
+                    <variable name="vDischargedToOtherSystem">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                    <variable name="vThreeWayValvePos">
+                      <type>
+                        <REAL />
+                      </type>
+                    </variable>
+                  </localVars>
+                </interface>
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">(* Handle the valves *)
+Tank1DrainValve(
+	OpenCmd:= IO.Tank1DrainValveOpenCmd, 
+	CloseCmd:= IO.Tank1DrainValveCloseCmd, 
+	cfgOpeningTime:= T#3S, 
+	cfgClosingTime:= T#3S, 
+	simOpenFail:= FALSE, 
+	simCloseFail:= FALSE, 
+	Opened=&gt; IO.Tank1DrainValveOpened, 
+	Closed=&gt; IO.Tank1DrainValveClosed );
+	
+Tank2DrainValve(
+	OpenCmd:= IO.Tank2DrainValveOpenCmd, 
+	CloseCmd:= IO.Tank2DrainValveCloseCmd, 
+	cfgOpeningTime:= T#3S, 
+	cfgClosingTime:= T#3S, 
+	simOpenFail:= FALSE, 
+	simCloseFail:= FALSE, 
+	Opened=&gt; IO.Tank2DrainValveOpened, 
+	Closed=&gt; IO.Tank2DrainValveClosed );
+
+Tank3DrainValve(
+	OpenCmd:= IO.Tank3DrainValveOpenCmd, 
+	CloseCmd:= IO.Tank3DrainValveCloseCmd, 
+	cfgOpeningTime:= T#3S, 
+	cfgClosingTime:= T#3S, 
+	simOpenFail:= FALSE, 
+	simCloseFail:= FALSE, 
+	Opened=&gt; IO.Tank3DrainValveOpened, 
+	Closed=&gt; IO.Tank3DrainValveClosed );
+	
+Tank4DrainValve(
+	OpenCmd:= IO.Tank4DrainValveOpenCmd, 
+	CloseCmd:= IO.Tank4DrainValveCloseCmd, 
+	cfgOpeningTime:= T#3S, 
+	cfgClosingTime:= T#3S, 
+	simOpenFail:= FALSE, 
+	simCloseFail:= FALSE, 
+	Opened=&gt; IO.Tank4DrainValveOpened, 
+	Closed=&gt; IO.Tank4DrainValveClosed );
+	
+CollectingDrainValve(
+	OpenCmd:= IO.CollectingTankDrainValveOpenCmd, 
+	CloseCmd:= IO.CollectingTankDrainValveCloseCmd, 
+	cfgOpeningTime:= T#3S, 
+	cfgClosingTime:= T#3S, 
+	simOpenFail:= FALSE, 
+	simCloseFail:= FALSE, 
+	Opened=&gt; IO.CollectingTankDrainValveOpened, 
+	Closed=&gt; IO.CollectingTankDrainValveClosed );
+
+Tank1FillingValve(
+	OpenCmd:= IO.Tank1FillingValveOpenCmd, 
+	CloseCmd:= IO.Tank1FillingValveCloseCmd, 
+	cfgOpeningTime:= T#3S, 
+	cfgClosingTime:= T#3S, 
+	simOpenFail:= FALSE, 
+	simCloseFail:= FALSE, 
+	Opened=&gt; IO.Tank1FillingValveOpened, 
+	Closed=&gt; IO.Tank1FillingValveClosed );
+	
+Tank2FillingValve(
+	OpenCmd:= IO.Tank2FillingValveOpenCmd, 
+	CloseCmd:= IO.Tank2FillingValveCloseCmd, 
+	cfgOpeningTime:= T#3S, 
+	cfgClosingTime:= T#3S, 
+	simOpenFail:= FALSE, 
+	simCloseFail:= FALSE, 
+	Opened=&gt; IO.Tank2FillingValveOpened, 
+	Closed=&gt; IO.Tank2FillingValveClosed );
+
+Tank3FillingValve(
+	OpenCmd:= IO.Tank3FillingValveOpenCmd, 
+	CloseCmd:= IO.Tank3FillingValveCloseCmd, 
+	cfgOpeningTime:= T#3S, 
+	cfgClosingTime:= T#3S, 
+	simOpenFail:= FALSE, 
+	simCloseFail:= FALSE, 
+	Opened=&gt; IO.Tank3FillingValveOpened, 
+	Closed=&gt; IO.Tank3FillingValveClosed );
+	
+Tank4FillingValve(
+	OpenCmd:= IO.Tank4FillingValveOpenCmd, 
+	CloseCmd:= IO.Tank4FillingValveCloseCmd, 
+	cfgOpeningTime:= T#3S, 
+	cfgClosingTime:= T#3S, 
+	simOpenFail:= FALSE, 
+	simCloseFail:= FALSE, 
+	Opened=&gt; IO.Tank4FillingValveOpened, 
+	Closed=&gt; IO.Tank4FillingValveClosed );
+	
+CollectingFillingValve(
+	OpenCmd:= IO.CollectingTankFillingValveOpenCmd, 
+	CloseCmd:= IO.CollectingTankFillingValveCloseCmd, 
+	cfgOpeningTime:= T#3S, 
+	cfgClosingTime:= T#3S, 
+	simOpenFail:= FALSE, 
+	simCloseFail:= FALSE, 
+	Opened=&gt; IO.CollectingTankFillingValveOpened, 
+	Closed=&gt; IO.CollectingTankFillingValveClosed );
+	
+RecirculationValve(
+	OpenCMD := IO.OpenRecirculationValveCMD,
+	CloseCMD := IO.CloseRecirculationValveCMD,
+	cfgTaskSeq_ms := 20,
+	cfgOpenSpeed_s := 5,
+	cfgCloseSpeed_s:= 5,
+	Position =&gt; IO.RecirculationValvePosition);
+	
+DischargeThreeWayValve(
+	ForwardCMD:= IO.DischargeThreeWayFwdCmd, 
+	BackwardCMD:= IO.DischargeThreeWayBackCmd, 
+	cfgTaskSeq_ms:= 20, 
+	cfgOpenSpeed_s:= 5, 
+	cfgCloseSpeed_s:= 5, 
+	Position=&gt; IO.DischargeThreeWayValvePosition );
+	
+(* Calculate the system values *)
+vNoOfDraining := BOOL_TO_DINT(Tank1DrainValve.Opened)
+				+ BOOL_TO_DINT(Tank2DrainValve.Opened)
+				+ BOOL_TO_DINT(Tank3DrainValve.Opened)
+				+ BOOL_TO_DINT(Tank4DrainValve.Opened);
+
+vNoOfFilling := BOOL_TO_DINT(Tank1FillingValve.Opened)
+				+ BOOL_TO_DINT(Tank2FillingValve.Opened)
+				+ BOOL_TO_DINT(Tank3FillingValve.Opened)
+				+ BOOL_TO_DINT(Tank4FillingValve.Opened);				
+(* Handle the pumps *)
+Pump1Sim(
+	OnCmd:= IO.Pump1StartCmd, 
+	OffCmd:= IO.Pump1StopCmd, 
+	cfgFlowrate:= 2400,
+	SimTrip:= IO.Pump1Running AND RecirculationValve.Position = 0 AND vNoOfFilling = 0,
+	NoWater := CollectingTank.TankLevel_cbm = 0 OR CollectingDrainValve.Closed, 
+	RunStatus=&gt; vPump1RunningDint, 
+	FlowmeterOut=&gt; vPump1FlowRate);
+	IO.Pump1Running:= DINT_TO_BOOL(vPump1RunningDint);
+	
+Pump2Sim(
+	OnCmd:= IO.Pump2StartCmd, 
+	OffCmd:= IO.Pump2StopCmd, 
+	cfgFlowrate:= 2400,
+	SimTrip:= IO.Pump2Running AND RecirculationValve.Position = 0 AND vNoOfFilling = 0,
+	NoWater := CollectingTank.TankLevel_cbm = 0 OR CollectingDrainValve.Closed,  
+	RunStatus=&gt; vPump2RunningDint, 
+	FlowmeterOut=&gt; vPump2FlowRate);
+	IO.Pump2Running:= DINT_TO_BOOL(vPump2RunningDint);
+				
+vSystemFlowRate := vPump1FlowRate + vPump2Flowrate;
+vSystemFlowRateTank1 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank1FillingValve.Opened);
+vSystemFlowRateTank2 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank2FillingValve.Opened);
+vSystemFlowRateTank3 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank3FillingValve.Opened);
+vSystemFlowRateTank4 := 0.01*(100-RecirculationValve.Position)*(vSystemFlowRate / DINT_TO_REAL(MAX(1,vNoOfFilling))) * BOOL_TO_REAL(Tank4FillingValve.Opened);
+vReturnLineFlow := vSystemFlowRate - vSystemFlowRateTank1 - vSystemFlowRateTank2 - vSystemFlowRateTank3 - vSystemFlowRateTank4;
+
+IF IO.DischargeThreeWayValvePosition &gt;= -45 AND IO.DischargeThreeWayValvePosition &lt;= 90 THEN
+	MapSignal(x1 := 0, x2 := 1, a1 := -45, a2 := 90, A := IO.DischargeThreeWayValvePosition, X =&gt; vThreeWayValvePos);
+ELSIF IO.DischargeThreeWayValvePosition &gt; 90 THEN
+	MapSignal(x1 := 1, x2 := 0, a1 := 90, a2 := 180, A := IO.DischargeThreeWayValvePosition, X =&gt; vThreeWayValvePos);
+END_IF;
+
+vGravityDrainTank1 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank1DrainValve.Opened AND Tank1.TankLevel_pc &gt; 0);
+vGravityDrainTank2 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank2DrainValve.Opened AND Tank2.TankLevel_pc &gt; 0);
+vGravityDrainTank3 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank3DrainValve.Opened AND Tank3.TankLevel_pc &gt; 0);
+vGravityDrainTank4 := (vGravityDrain / DINT_TO_REAL(MAX(1,vNoOfDraining)))* BOOL_TO_REAL(Tank4DrainValve.Opened AND Tank4.TankLevel_pc &gt; 0);
+//Dischargin possible from -10 to +180
+// Gravity possible from -180 to 10
+vDischargedToOtherSystem := (vGravityDrainTank1 +	vGravityDrainTank2 + vGravityDrainTank3 + vGravityDrainTank4) * LIMIT(0,vThreeWayValvePos, 1);
+vGravityDrainReturnFlow := vGravityDrainTank1 +	vGravityDrainTank2 + vGravityDrainTank3 + vGravityDrainTank4 - vDischargedToOtherSystem;
+
+Tank1(
+	cfgTaskCycle:= 20, 
+	cfgLenght:= 10, 
+	cfgWidth:= 10, 
+	cfgHeight:= 5, 
+	cfgStartLevel:= 0, 
+	Inflow1:= vSystemFlowRateTank1,
+	Outflow1:= vGravityDrainTank1,
+	TankLevel_cbm=&gt;vTank1Level_cbm,
+	TankLevel_pc=&gt; IO.Tank1Level_pc);
+	vTank1Name := 'Storage Tank 1';
+	vTank1Nominal := 500;
+
+Tank2(
+	cfgTaskCycle:= 20, 
+	cfgLenght:= 5, 
+	cfgWidth:= 5, 
+	cfgHeight:= 5, 
+	cfgStartLevel:= 100, 
+	Inflow1:= vSystemFlowRateTank2, 
+	Outflow1:= vGravityDrainTank2,
+	TankLevel_cbm=&gt;vTank2Level_cbm,
+	TankLevel_pc=&gt; IO.Tank2Level_pc);
+	vTank2Name := 'Storage Tank 2';
+	vTank2Nominal := 125;
+	
+Tank3(
+	cfgTaskCycle:= 20, 
+	cfgLenght:= 5, 
+	cfgWidth:= 5, 
+	cfgHeight:= 5, 
+	cfgStartLevel:= 100, 
+	Inflow1:= vSystemFlowRateTank3, 
+	Outflow1:= vGravityDrainTank3,
+	TankLevel_cbm=&gt;vTank3Level_cbm,
+	TankLevel_pc=&gt; IO.Tank3Level_pc);
+	vTank3Name := 'Storage Tank 3';
+	vTank3Nominal := 125;
+	
+Tank4(
+	cfgTaskCycle:= 20, 
+	cfgLenght:= 10, 
+	cfgWidth:= 10, 
+	cfgHeight:= 5, 
+	cfgStartLevel:= 0, 
+	Inflow1:= vSystemFlowRateTank4, 
+	Outflow1:= vGravityDrainTank4,
+	TankLevel_cbm=&gt;vTank4Level_cbm,
+	TankLevel_pc=&gt; IO.Tank4Level_pc);
+	vTank4Name := 'Storage Tank 4';
+	vTank4Nominal := 500;
+
+CollectingTank(
+	cfgTaskCycle:= 20, 
+	cfgLenght:= 10, 
+	cfgWidth:= 10, 
+	cfgHeight:= 10, 
+	cfgStartLevel:= 333, 
+	Inflow1:= 5000 * BOOL_TO_REAL(CollectingFillingValve.Opened), 
+	Inflow2:= vGravityDrainReturnFlow,
+	Inflow3:= vReturnLineFlow,
+	Outflow1:= vSystemFlowRate * BOOL_TO_REAL(CollectingDrainValve.Opened),
+	TankLevel_cbm=&gt;vCollectingTankLevel_cbm,
+	TankLevel_pc=&gt; IO.CollectingTankLevel_pc);
+	vCollectingTankName := 'Collecting Tank';
+	vCollectingTankNom := 1000;
+</xhtml>
+                  </ST>
+                </body>
+                <addData />
+              </pou>
+            </data>
+            <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
+              <pou name="classFlipFlopCtrl" pouType="functionBlock">
+                <interface>
+                  <inputVars>
+                    <variable name="SetAutoCmd">
+                      <type>
+                        <BOOL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="FALSE" />
+                      </initialValue>
+                    </variable>
+                    <variable name="SetManCmd">
+                      <type>
+                        <BOOL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="FALSE" />
+                      </initialValue>
+                    </variable>
+                    <variable name="CloseManCmd">
+                      <type>
+                        <BOOL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="FALSE" />
+                      </initialValue>
+                    </variable>
+                    <variable name="OpenManCmd">
+                      <type>
+                        <BOOL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="FALSE" />
+                      </initialValue>
+                    </variable>
+                    <variable name="CloseAutoCmd">
+                      <type>
+                        <BOOL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="FALSE" />
+                      </initialValue>
+                    </variable>
+                    <variable name="OpenAutoCmd">
+                      <type>
+                        <BOOL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="FALSE" />
+                      </initialValue>
+                    </variable>
+                    <variable name="Opened">
+                      <type>
+                        <BOOL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="FALSE" />
+                      </initialValue>
+                    </variable>
+                    <variable name="Closed">
+                      <type>
+                        <BOOL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="FALSE" />
+                      </initialValue>
+                    </variable>
+                  </inputVars>
+                  <outputVars>
+                    <variable name="qCloseCmd">
+                      <type>
+                        <BOOL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="FALSE" />
+                      </initialValue>
+                    </variable>
+                    <variable name="qOpenCmd">
+                      <type>
+                        <BOOL />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="FALSE" />
+                      </initialValue>
+                    </variable>
+                  </outputVars>
+                  <localVars>
+                    <variable name="vSetAutoCmdOld">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="vControlPos">
+                      <type>
+                        <INT />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="0" />
+                      </initialValue>
+                    </variable>
+                    <variable name="vSetManCmdOld">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="vErrorStateActive">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                  </localVars>
+                </interface>
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">// Determine control position
+IF (vControlPos = 0) AND SetAutoCmd AND NOT vSetAutoCmdOld THEN
+	vControlPos := 1;
+END_IF
+IF (vControlPos = 1) AND SetManCmd AND NOT vSetManCmdOld THEN
+	vControlPos := 0;
+END_IF
+
+IF vErrorStateActive THEN
+	vControlPos := 0;
+END_IF
+
+CASE vControlPos OF
+	0: (* Manual *)
+	qCloseCmd := CloseManCmd AND NOT Closed;
+	qOpenCmd := OpenManCmd AND NOT Opened;
+	
+	1: (* Auto *)
+	qCloseCmd := CloseAutoCmd AND NOT Closed;
+	qOpenCmd := OpenAutoCmd AND NOT Opened;
+END_CASE
+
+// Memory
+vSetAutoCmdOld := SetAutoCmd;
+vSetManCmdOld :=  SetManCmd;</xhtml>
+                  </ST>
+                </body>
+                <addData />
+              </pou>
+            </data>
+            <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
+              <pou name="ValveLogic" pouType="program">
+                <interface>
+                  <localVars>
+                    <variable name="ON">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="TripSeverity">
+                      <type>
+                        <INT />
+                      </type>
+                    </variable>
+                    <variable name="Voltage">
+                      <type>
+                        <INT />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="110" />
+                      </initialValue>
+                    </variable>
+                  </localVars>
+                </interface>
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">ON := TripSeverity = 1 AND Voltage &lt;= 100 OR ON AND TripSeverity = 1;
+</xhtml>
+                  </ST>
+                </body>
+                <addData />
+              </pou>
+            </data>
+            <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
+              <pou name="TankLogic" pouType="program">
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <addData />
+              </pou>
+            </data>
+            <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
+              <pou name="MapSignal" pouType="functionBlock">
+                <interface>
+                  <inputVars>
+                    <variable name="x1">
+                      <type>
+                        <REAL />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Minimum range of output signal </xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="x2">
+                      <type>
+                        <REAL />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Maximum range of output signal </xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="a1">
+                      <type>
+                        <REAL />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Minimum range of input signal </xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="a2">
+                      <type>
+                        <REAL />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Maximum range of input signal </xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="A">
+                      <type>
+                        <REAL />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Actual input signal </xhtml>
+                      </documentation>
+                    </variable>
+                  </inputVars>
+                  <outputVars>
+                    <variable name="X">
+                      <type>
+                        <REAL />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Actual output signal </xhtml>
+                      </documentation>
+                    </variable>
+                  </outputVars>
+                </interface>
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> X := (x2 - x1)*(A - a1)/(a2 - a1) + x1;</xhtml>
+                  </ST>
+                </body>
+                <addData />
+              </pou>
+            </data>
+            <data name="http://www.3s-software.com/plcopenxml/libraries" handleUnknown="implementation">
+              <Libraries>
+                <Library Name="#Standard" Namespace="Standard" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="Standard, * (System)" />
+                <Library Name="#System_VisuElems" Namespace="VisuElems" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElems, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="#System_VisuElemMeter" Namespace="VisuElemMeter" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemMeter, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="#System_VisuElemsSpecialControls" Namespace="VisuElemsSpecialControls" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsSpecialControls, 3.5.11.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="#System_VisuElemsWinControls" Namespace="VisuElemsWinControls" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsWinControls, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="#System_VisuElemTextEditor" Namespace="VisuElemTextEditor" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemTextEditor, 3.5.11.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="#System_VisuElemTrace" Namespace="VisuElemTrace" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemTrace, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="#System_VisuNativeControl" Namespace="VisuNativeControl" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuNativeControl, 3.5.11.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="#System_VisuElemsAlarm" Namespace="VisuElemsAlarm" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsAlarm, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="#System_VisuElemCamDisplayer" Namespace="VisuElemCamDisplayer" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemCamDisplayer, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae">
+                  <Parameters>
+                    <Parameter Name="GC_POINTS_PER_CAM" Value="100" />
+                  </Parameters>
+                </Library>
+                <Library Name="#System_VisuElem3DPath" Namespace="VisuElem3DPath" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElem3DPath, 3.5.10.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae">
+                  <Parameters>
+                    <Parameter Name="GC_POINTS_PER_POLYGON" Value="100" />
+                  </Parameters>
+                </Library>
+                <Library Name="#System_VisuElemsDateTime" Namespace="VisuElemsDateTime" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsDateTime, 3.5.11.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="#System_VisuElemXYChart" Namespace="VisuElemXYChart" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemXYChart, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="#system_visuinputs" Namespace="visuinputs" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="visuinputs, 3.5.12.0 (system)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="TkAutomationLib, 1.0 (TkAutomation)" Namespace="TkAutomationLib" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" />
+                <Library Name="#Util" Namespace="Util" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="Util, * (System)" />
+                <Library Name="#Standard64" Namespace="Standard64" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="Standard64, * (System)" />
+                <Library Name="#VisuDialogs" Namespace="VisuDialogs" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="VisuDialogs, * (System)" />
+                <Library Name="#IoStandard" Namespace="IoStandard" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="true" DefaultResolution="IoStandard, 3.5.10.0 (System)" />
+                <Library Name="#3SLicense" Namespace="_3S_LICENSE" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="3SLicense, 0.0.0.0 (3S - Smart Software Solutions GmbH)" ResolverGuid="97c3b452-d9fa-4ac2-9d0c-3d420aa6d95b" />
+                <Library Name="Time and Date, 3.5.7.0 (3S - Smart Software Solutions GmbH)" Namespace="Time_and_Date" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" />
+                <Library Name="#CmpTraceMgr" Namespace="CmpTraceMgr" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="CmpTraceMgr, 3.5.0.0 (System)" />
+                <addData />
+              </Libraries>
+            </data>
+          </addData>
+        </resource>
+        <addData>
+          <data name="Device" handleUnknown="discard">
+            <Device xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="">
+              <DeviceType>
+                <DeviceIdentification>
+                  <Type>4097</Type>
+                  <Id>0000 000a</Id>
+                  <Version>3.5.14.10</Version>
+                </DeviceIdentification>
+                <Connector moduleType="256" interface="Common.PCI" connectorId="0">
+                  <HostParameterSet />
+                </Connector>
+                <Connector moduleType="769" interface="SafetyInterface" connectorId="1">
+                  <HostParameterSet />
+                </Connector>
+                <DeviceParameterSet />
+              </DeviceType>
+            </Device>
+          </data>
+          <data name="configurations" handleUnknown="discard">
+            <configurations />
+          </data>
+        </addData>
+      </configuration>
+    </configurations>
+  </instances>
+  <addData>
+    <data name="http://www.3s-software.com/plcopenxml/libraries" handleUnknown="implementation">
+      <Libraries>
+        <Library Name="#System_VisuElems" Namespace="VisuElems" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElems, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemMeter" Namespace="VisuElemMeter" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemMeter, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemsSpecialControls" Namespace="VisuElemsSpecialControls" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsSpecialControls, 3.5.11.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemsWinControls" Namespace="VisuElemsWinControls" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsWinControls, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemTextEditor" Namespace="VisuElemTextEditor" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemTextEditor, 3.5.11.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemTrace" Namespace="VisuElemTrace" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemTrace, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuNativeControl" Namespace="VisuNativeControl" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuNativeControl, 3.5.11.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemsAlarm" Namespace="VisuElemsAlarm" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsAlarm, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemCamDisplayer" Namespace="VisuElemCamDisplayer" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemCamDisplayer, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae">
+          <Parameters>
+            <Parameter Name="GC_POINTS_PER_CAM" Value="100" />
+          </Parameters>
+        </Library>
+        <Library Name="#System_VisuElem3DPath" Namespace="VisuElem3DPath" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElem3DPath, 3.5.10.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae">
+          <Parameters>
+            <Parameter Name="GC_POINTS_PER_POLYGON" Value="100" />
+          </Parameters>
+        </Library>
+        <Library Name="#System_VisuElemsDateTime" Namespace="VisuElemsDateTime" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsDateTime, 3.5.11.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#System_VisuElemXYChart" Namespace="VisuElemXYChart" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemXYChart, 3.5.12.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="#system_visuinputs" Namespace="visuinputs" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="visuinputs, 3.5.12.0 (system)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+        <Library Name="VisuSymbols, 3.5.10.0 (System)" Namespace="VisuSymbols" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" />
+        <addData />
+      </Libraries>
+    </data>
+  </addData>
+</project>
