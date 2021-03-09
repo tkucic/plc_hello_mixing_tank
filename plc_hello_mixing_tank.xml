@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-09T20:10:54.023786" />
-  <contentHeader name="Hello Mixing tank" version="1.0" modificationDateTime="2021-03-09T20:10:53.9398412" organization="Tk Automation" author="Toni Kucic">
-    <Comment>This project is implementing a simple mixing tank with simulator. The purpose of the project is to serve as an educational platform for begginers.</Comment>
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-09T20:44:30.814785" />
+  <contentHeader name="Hello Mixing tank" version="1.0" modificationDateTime="2021-03-09T20:44:30.708851" organization="Tk Automation" author="Toni Kucic">
+    <Comment>In industrial automation the "hello world" program is a mixing tank. As a part of my portfolio I have written a simple mixing tank controller and a simulator. The project is meant for begginers and for educational purposes. It is published under MIT license. Written in CODESYS 3.5 and in structured text language.
+
+The project is designed in a way that the user can disable the main program and replace it with his own implementation. Simulator and the HMI sees only the IO and HMI global variables so if the user wishes to create an own implementation those variables should be written. On the simulator side the operator can see if the implementation is working correctly.</Comment>
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -20,7 +22,9 @@
           <property name="Author" type="string">Toni Kucic</property>
           <property name="Company" type="string">Tk Automation</property>
           <property name="CompiledLibraryCompatibilityVersion" type="string">CODESYS V3.5 SP16</property>
-          <property name="Description" type="string">This project is implementing a simple mixing tank with simulator. The purpose of the project is to serve as an educational platform for begginers.</property>
+          <property name="Description" type="string">In industrial automation the "hello world" program is a mixing tank. As a part of my portfolio I have written a simple mixing tank controller and a simulator. The project is meant for begginers and for educational purposes. It is published under MIT license. Written in CODESYS 3.5 and in structured text language.
+
+The project is designed in a way that the user can disable the main program and replace it with his own implementation. Simulator and the HMI sees only the IO and HMI global variables so if the user wishes to create an own implementation those variables should be written. On the simulator side the operator can see if the implementation is working correctly.</property>
           <property name="Project" type="string">plc_hello_mixing_tank</property>
           <property name="Title" type="string">Hello Mixing tank</property>
           <property name="Version" type="version">1.0</property>
@@ -313,6 +317,122 @@ Deactivated := vState = 0;</xhtml>
               </data>
             </addData>
           </globalVars>
+          <globalVars name="HMI">
+            <variable name="MixerRunCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to start the mixer</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MixerStopCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to stop the mixer</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Medium1OpenCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to open medium 1 valve</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Medium1CloseCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to close medium 1 valve</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Medium2OpenCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to open medium 2 valve</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Medium2CloseCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to close medium 2 valve</xhtml>
+              </documentation>
+            </variable>
+            <variable name="DrainOpenCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to open drain valve</xhtml>
+              </documentation>
+            </variable>
+            <variable name="DrainCloseCmd">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to close drain valve</xhtml>
+              </documentation>
+            </variable>
+            <variable name="SetToAuto">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to set the system to auto mode</xhtml>
+              </documentation>
+            </variable>
+            <variable name="SetToManual">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to set the system to manual mode</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MotorRotating">
+              <type>
+                <REAL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">HMI Support variables</xhtml>
+              </documentation>
+            </variable>
+            <variable name="InAuto">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">System in AUTO</xhtml>
+              </documentation>
+            </variable>
+            <variable name="InManual">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">System in MANUAL</xhtml>
+              </documentation>
+            </variable>
+            <addData>
+              <data name="http://www.3s-software.com/plcopenxml/attributes" handleUnknown="implementation">
+                <Attributes>
+                  <Attribute Name="qualified_only" Value="" />
+                </Attributes>
+              </data>
+              <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                <ObjectId>8b80ad5a-efa2-4730-85dc-3d14ccd4ce6d</ObjectId>
+              </data>
+            </addData>
+          </globalVars>
           <addData>
             <data name="http://www.3s-software.com/plcopenxml/datatype" handleUnknown="implementation">
               <dataType name="MODES">
@@ -399,99 +519,6 @@ Deactivated := vState = 0;</xhtml>
                 </addData>
               </dataType>
             </data>
-            <data name="http://www.3s-software.com/plcopenxml/datatype" handleUnknown="implementation">
-              <dataType name="OperatorCmds_typ">
-                <baseType>
-                  <struct>
-                    <variable name="MixerRunCmd">
-                      <type>
-                        <BOOL />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to start the mixer</xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="MixerStopCmd">
-                      <type>
-                        <BOOL />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to stop the mixer</xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="Medium1OpenCmd">
-                      <type>
-                        <BOOL />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to open medium 1 valve</xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="Medium1CloseCmd">
-                      <type>
-                        <BOOL />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to close medium 1 valve</xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="Medium2OpenCmd">
-                      <type>
-                        <BOOL />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to open medium 2 valve</xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="Medium2CloseCmd">
-                      <type>
-                        <BOOL />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to close medium 2 valve</xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="DrainOpenCmd">
-                      <type>
-                        <BOOL />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to open drain valve</xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="DrainCloseCmd">
-                      <type>
-                        <BOOL />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to close drain valve</xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="SetToAuto">
-                      <type>
-                        <BOOL />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to set the system to auto mode</xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="SetToManual">
-                      <type>
-                        <BOOL />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Command to set the system to manual mode</xhtml>
-                      </documentation>
-                    </variable>
-                  </struct>
-                </baseType>
-                <addData>
-                  <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
-                    <ObjectId>3a3f081e-8732-4763-ac6f-b5785b34639a</ObjectId>
-                  </data>
-                </addData>
-              </dataType>
-            </data>
             <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
               <pou name="simulator" pouType="program">
                 <interface>
@@ -537,6 +564,14 @@ Deactivated := vState = 0;</xhtml>
                       </type>
                       <documentation>
                         <xhtml xmlns="http://www.w3.org/1999/xhtml">Simulated valve that drains the tank</xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="vMotorRotating">
+                      <type>
+                        <REAL />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Motor activated for HMI</xhtml>
                       </documentation>
                     </variable>
                   </localVars>
@@ -634,22 +669,6 @@ IF vMotorRotating &gt;= 360 THEN vMotorRotating := 0; END_IF
                         <xhtml xmlns="http://www.w3.org/1999/xhtml">Timer to control the mixing duration</xhtml>
                       </documentation>
                     </variable>
-                    <variable name="HMI">
-                      <type>
-                        <derived name="OperatorCmds_typ" />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Operator interaction commands</xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="vMotorRotating">
-                      <type>
-                        <REAL />
-                      </type>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">HMI Support variables</xhtml>
-                      </documentation>
-                    </variable>
                   </localVars>
                 </interface>
                 <body>
@@ -713,6 +732,10 @@ CASE vMode OF
 		END_IF
 		CASE vAutoState OF
 			AUTO_SEQUENCE.FILLING:
+				(*Make sure other devices are not working*)
+				IO.xDO_M1_MixerMotorRunCmd := FALSE;
+				IO.xDO_VV03_TankDrain_OpenCmd := FALSE;
+				
 				(*Open both medium valves and start filling the tank*)
 				IO.xDO_VV01_Medium1_OpenCmd := NOT IO.xDI_LS01_TankLevelFull;
 				IO.xDO_VV02_Medium2_OpenCmd := NOT IO.xDI_LS01_TankLevelFull;
@@ -722,6 +745,11 @@ CASE vMode OF
 					vAutoState := AUTO_SEQUENCE.MIXING;
 				END_IF
 			AUTO_SEQUENCE.MIXING:
+				(*Make sure other devices are not working*)
+				IO.xDO_VV01_Medium1_OpenCmd := FALSE;
+				IO.xDO_VV02_Medium2_OpenCmd := FALSE;
+				IO.xDO_VV03_TankDrain_OpenCmd := FALSE;
+				
 				(*Start the mixer motor and mix for 10s*)
 				IO.xDO_M1_MixerMotorRunCmd := TRUE;
 				MixingTimer(IN:=IO.xDI_M1_MixerMotorRunning, PT:=T#10S);
@@ -733,6 +761,11 @@ CASE vMode OF
 				END_IF
 				
 			AUTO_SEQUENCE.DRAINING:
+				(*Make sure other devices are not working*)
+				IO.xDO_M1_MixerMotorRunCmd := FALSE;
+				IO.xDO_VV01_Medium1_OpenCmd := FALSE;
+				IO.xDO_VV02_Medium2_OpenCmd := FALSE;
+				
 				(*Open the drain valve and start draining the tank*)
 				IO.xDO_VV03_TankDrain_OpenCmd := NOT IO.xDI_LS02_TankLevelEmpty;
 				
@@ -766,8 +799,10 @@ ELSE
 END_IF
 
 (*HMI *)
-vMotorRotating := vMotorRotating + 2 * BOOL_TO_REAL(IO.xDI_M1_MixerMotorRunning);
-IF vMotorRotating &gt;= 360 THEN vMotorRotating := 0; END_IF</xhtml>
+HMI.MotorRotating := HMI.MotorRotating + 2 * BOOL_TO_REAL(IO.xDI_M1_MixerMotorRunning);
+IF HMI.MotorRotating &gt;= 360 THEN HMI.MotorRotating := 0; END_IF
+HMI.InAuto := vMode = MODES.AUTO;
+HMI.InManual := vMode = MODES.MANUAL;</xhtml>
                   </ST>
                 </body>
                 <addData>
@@ -891,10 +926,10 @@ IF vMotorRotating &gt;= 360 THEN vMotorRotating := 0; END_IF</xhtml>
             <Object Name="IO" ObjectId="4c826d48-3338-4934-8c38-ee14b03cf4fe" />
             <Object Name="MODES" ObjectId="4a6bc2e5-291e-411b-9ffe-8051d9f084f6" />
             <Object Name="AUTO_SEQUENCE" ObjectId="4262d74e-130e-42b9-a9fa-3b5e1b07bfe7" />
-            <Object Name="OperatorCmds_typ" ObjectId="3a3f081e-8732-4763-ac6f-b5785b34639a" />
             <Object Name="simulator" ObjectId="0c49e400-ee18-44bb-9c02-11f51c58f352" />
             <Object Name="main" ObjectId="8869c018-8ab4-43df-b928-63c28bd929f1" />
             <Object Name="Library Manager" ObjectId="b53d2a89-2d9a-449f-912e-ef96124649aa" />
+            <Object Name="HMI" ObjectId="8b80ad5a-efa2-4730-85dc-3d14ccd4ce6d" />
           </Object>
         </Object>
         <Object Name="Library Manager" ObjectId="544019e4-b229-46bf-8470-c1031904343b" />
