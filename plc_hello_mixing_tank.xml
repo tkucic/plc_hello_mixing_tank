@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-09T20:44:30.814785" />
-  <contentHeader name="Hello Mixing tank" version="1.0" modificationDateTime="2021-03-09T20:44:30.708851" organization="Tk Automation" author="Toni Kucic">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-09T21:37:55.6905483" />
+  <contentHeader name="Hello Mixing tank" version="1.0" modificationDateTime="2021-03-09T21:37:55.614592" organization="Tk Automation" author="Toni Kucic">
     <Comment>In industrial automation the "hello world" program is a mixing tank. As a part of my portfolio I have written a simple mixing tank controller and a simulator. The project is meant for begginers and for educational purposes. It is published under MIT license. Written in CODESYS 3.5 and in structured text language.
 
 The project is designed in a way that the user can disable the main program and replace it with his own implementation. Simulator and the HMI sees only the IO and HMI global variables so if the user wishes to create an own implementation those variables should be written. On the simulator side the operator can see if the implementation is working correctly.</Comment>
