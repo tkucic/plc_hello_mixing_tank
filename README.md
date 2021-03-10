@@ -48,7 +48,19 @@ There are two ways of operation:
 
 * After mixing is completed, drain the whole contents
 
-* Repeats as long as auto is activated*)
+* Repeats as long as auto is activated
+
+### HMI Requirements
+
+* Manual / Auto needs to be correctly controlled and displayed
+
+* If manual, clicking on devices activates or stops them
+
+* If auto, clicking is not doing anything
+
+* If auto, system is counting number of cycles completed
+
+* Devices must clearly display if they are activated or deactivated
 
 ## MODIFICATION FOR EDUCATIONAL PURPOSES
 
