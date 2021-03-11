@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-09T21:37:55.6905483" />
-  <contentHeader name="Hello Mixing tank" version="1.0" modificationDateTime="2021-03-09T21:37:55.614592" organization="Tk Automation" author="Toni Kucic">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-11T21:02:17.1386427" />
+  <contentHeader name="Hello Mixing tank" version="1.0" modificationDateTime="2021-03-11T20:32:57.2894189" organization="Tk Automation" author="Toni Kucic">
     <Comment>In industrial automation the "hello world" program is a mixing tank. As a part of my portfolio I have written a simple mixing tank controller and a simulator. The project is meant for begginers and for educational purposes. It is published under MIT license. Written in CODESYS 3.5 and in structured text language.
 
 The project is designed in a way that the user can disable the main program and replace it with his own implementation. Simulator and the HMI sees only the IO and HMI global variables so if the user wishes to create an own implementation those variables should be written. On the simulator side the operator can see if the implementation is working correctly.</Comment>
@@ -208,7 +208,7 @@ Deactivated := vState = 0;</xhtml>
               </data>
             </addData>
           </task>
-          <task name="VISU_TASK" interval="PT0.1S" priority="31">
+          <task name="VISU_TASK" interval="PT0.02S" priority="31">
             <pouInstance name="VisuElems.Visu_Prg" typeName="">
               <documentation>
                 <xhtml xmlns="http://www.w3.org/1999/xhtml" />
@@ -216,7 +216,7 @@ Deactivated := vState = 0;</xhtml>
             </pouInstance>
             <addData>
               <data name="http://www.3s-software.com/plcopenxml/tasksettings" handleUnknown="implementation">
-                <TaskSettings KindOfTask="Cyclic" Interval="100" IntervalUnit="ms" WithinSPSTimeSlicing="true">
+                <TaskSettings KindOfTask="Cyclic" Interval="20" IntervalUnit="ms" WithinSPSTimeSlicing="true">
                   <Watchdog Enabled="false" TimeUnit="ms" />
                 </TaskSettings>
               </data>
@@ -420,6 +420,14 @@ Deactivated := vState = 0;</xhtml>
               </type>
               <documentation>
                 <xhtml xmlns="http://www.w3.org/1999/xhtml">System in MANUAL</xhtml>
+              </documentation>
+            </variable>
+            <variable name="CyclesCompleted">
+              <type>
+                <UINT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Cycles completed</xhtml>
               </documentation>
             </variable>
             <addData>
@@ -691,7 +699,14 @@ Automatic:
 	- Filling state is until LS01 is activated (Tank is full)
 	- Then the mixer motor is mixing for 10 seconds
 	- After mixing is completed, drain the whole contents
-	- Repeats as long as auto is activated*)
+	- Repeats as long as auto is activated
+	
+HMI Requirements:
+	- Manual / Auto needs to be correctly controlled and displayed
+	- If manual, clicking on devices activates or stops them
+	- If auto, clicking is not doing anything
+	- If auto, system is counting number of cycles completed
+	- Devices must clearly display if they are activated or deactivated*)
 
 (*Enabling operator to select auto or manual mode*)
 CASE vMode OF
@@ -772,6 +787,7 @@ CASE vMode OF
 				(*When the tank is empty, wait for the drain valve to close,then go to filling*)
 				IF IO.xDI_LS02_TankLevelEmpty AND NOT IO.xDI_VV03_TankDrain_Opened THEN
 					vAutoState := AUTO_SEQUENCE.FILLING;
+					HMI.CyclesCompleted := HMI.CyclesCompleted + 1;
 				END_IF
 		END_CASE
 END_CASE
