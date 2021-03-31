@@ -24,31 +24,31 @@ INTERFACE
 END_INTERFACE
 FUNCTION_BLOCK GenericBistableDeviceModel:
     CASE vState OF
-	0: (*Deactivated*)
-		(*On entry do:*)
-		IF vState <> vStateOld THEN
-			(*Reset timer*)
-			TransitionDelay(IN:=FALSE);
-			vStateOld := vState;
-		END_IF
-		TransitionDelay(IN:=ActivateCmd AND NOT simActFail, PT:=cfgActTime);
-		IF TransitionDelay.Q THEN
-			vState := 1;
-		END_IF
-	1: (*Activated*)
-		(*On entry do:*)
-		IF vState <> vStateOld THEN
-			(*Reset timer*)
-			TransitionDelay(IN:=FALSE);
-			vStateOld := vState;
-		END_IF
-		TransitionDelay(IN:=DeactivateCmd AND NOT simDeactFail, PT:=cfgDeactTime);
-		IF TransitionDelay.Q THEN
-			vState := 0;
-		END_IF
-END_CASE
-Activated := vState = 1;
-Deactivated := vState = 0;
+    	0: (*Deactivated*)
+    		(*On entry do:*)
+    		IF vState <> vStateOld THEN
+    			(*Reset timer*)
+    			TransitionDelay(IN:=FALSE);
+    			vStateOld := vState;
+    		END_IF
+    		TransitionDelay(IN:=ActivateCmd AND NOT simActFail, PT:=cfgActTime);
+    		IF TransitionDelay.Q THEN
+    			vState := 1;
+    		END_IF
+    	1: (*Activated*)
+    		(*On entry do:*)
+    		IF vState <> vStateOld THEN
+    			(*Reset timer*)
+    			TransitionDelay(IN:=FALSE);
+    			vStateOld := vState;
+    		END_IF
+    		TransitionDelay(IN:=DeactivateCmd AND NOT simDeactFail, PT:=cfgDeactTime);
+    		IF TransitionDelay.Q THEN
+    			vState := 0;
+    		END_IF
+    END_CASE
+    Activated := vState = 1;
+    Deactivated := vState = 0;
 END_FUNCTION_BLOCK
 ```
 

@@ -15,50 +15,50 @@ INTERFACE
 END_INTERFACE
 PROGRAM simulator:
     (*Motor and valve simulation*)
-MixerMotor(
-	ActivateCmd := IO.xDO_M1_MixerMotorRunCmd,
-	DeactivateCmd := NOT IO.xDO_M1_MixerMotorRunCmd,
-	cfgActTime := T#2S,
-	cfgDeactTime := T#0S,
-	Activated => IO.xDI_M1_MixerMotorRunning);
+    MixerMotor(
+    	ActivateCmd := IO.xDO_M1_MixerMotorRunCmd,
+    	DeactivateCmd := NOT IO.xDO_M1_MixerMotorRunCmd,
+    	cfgActTime := T#2S,
+    	cfgDeactTime := T#0S,
+    	Activated => IO.xDI_M1_MixerMotorRunning);
 
-MediumValve1(
-	ActivateCmd := IO.xDO_VV01_Medium1_OpenCmd,
-	DeactivateCmd := NOT IO.xDO_VV01_Medium1_OpenCmd,
-	cfgActTime := T#1S,
-	cfgDeactTime := T#1S,
-	Activated => IO.xDI_VV01_Medium1_Opened);
+    MediumValve1(
+    	ActivateCmd := IO.xDO_VV01_Medium1_OpenCmd,
+    	DeactivateCmd := NOT IO.xDO_VV01_Medium1_OpenCmd,
+    	cfgActTime := T#1S,
+    	cfgDeactTime := T#1S,
+    	Activated => IO.xDI_VV01_Medium1_Opened);
 
-MediumValve2(
-	ActivateCmd := IO.xDO_VV02_Medium2_OpenCmd,
-	DeactivateCmd := NOT IO.xDO_VV02_Medium2_OpenCmd,
-	cfgActTime := T#1S,
-	cfgDeactTime := T#1S,
-	Activated => IO.xDI_VV02_Medium2_Opened);
+    MediumValve2(
+    	ActivateCmd := IO.xDO_VV02_Medium2_OpenCmd,
+    	DeactivateCmd := NOT IO.xDO_VV02_Medium2_OpenCmd,
+    	cfgActTime := T#1S,
+    	cfgDeactTime := T#1S,
+    	Activated => IO.xDI_VV02_Medium2_Opened);
 
-DrainValve(
-	ActivateCmd := IO.xDO_VV03_TankDrain_OpenCmd,
-	DeactivateCmd := NOT IO.xDO_VV03_TankDrain_OpenCmd,
-	cfgActTime := T#1S,
-	cfgDeactTime := T#1S,
-	Activated => IO.xDI_VV03_TankDrain_Opened);
-	
-(*Tank filling simulation*)
-(*Tank fills if either filling valves are open and drains if the drain is open,
-if the program overfills it, the tank spills to the spill way*)
-vTankLevel :=  vTankLevel
-			 + 0.1 * BOOL_TO_REAL(MediumValve1.Activated)
-			 + 0.1 * BOOL_TO_REAL(MediumValve2.Activated)
-			 - 0.2 * BOOL_TO_REAL(DrainValve.Activated);
-vTankLevel := LIMIT(0, vTankLevel, 100);
+    DrainValve(
+    	ActivateCmd := IO.xDO_VV03_TankDrain_OpenCmd,
+    	DeactivateCmd := NOT IO.xDO_VV03_TankDrain_OpenCmd,
+    	cfgActTime := T#1S,
+    	cfgDeactTime := T#1S,
+    	Activated => IO.xDI_VV03_TankDrain_Opened);
+    	
+    (*Tank filling simulation*)
+    (*Tank fills if either filling valves are open and drains if the drain is open,
+    if the program overfills it, the tank spills to the spill way*)
+    vTankLevel :=  vTankLevel
+    			 + 0.1 * BOOL_TO_REAL(MediumValve1.Activated)
+    			 + 0.1 * BOOL_TO_REAL(MediumValve2.Activated)
+    			 - 0.2 * BOOL_TO_REAL(DrainValve.Activated);
+    vTankLevel := LIMIT(0, vTankLevel, 100);
 
-(*Limit switch simulation*)
-IO.xDI_LS01_TankLevelFull := vTankLevel >= 85;
-IO.xDI_LS02_TankLevelEmpty := vTankLevel <= 5;
+    (*Limit switch simulation*)
+    IO.xDI_LS01_TankLevelFull := vTankLevel >= 85;
+    IO.xDI_LS02_TankLevelEmpty := vTankLevel <= 5;
 
-(*HMI *)
-vMotorRotating := vMotorRotating + 1 * BOOL_TO_REAL(MixerMotor.Activated);
-IF vMotorRotating >= 360 THEN vMotorRotating := 0; END_IF
+    (*HMI *)
+    vMotorRotating := vMotorRotating + 1 * BOOL_TO_REAL(MixerMotor.Activated);
+    IF vMotorRotating >= 360 THEN vMotorRotating := 0; END_IF
 
 END_PROGRAM
 ```
