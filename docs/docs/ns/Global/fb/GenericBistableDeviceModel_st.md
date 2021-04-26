@@ -4,7 +4,7 @@
 
 ```pascal
 INTERFACE
-    VAR_INPUT
+    VAR_INPUT 
         ActivateCmd : BOOL; (*Command to activate the device*)
         DeactivateCmd : BOOL; (*Command to deactivate the device*)
         cfgActTime : TIME := TIME#1s0ms; (*Time needed to activate the device*)
@@ -12,11 +12,11 @@ INTERFACE
         simActFail : BOOL; (*Simulates activation fail. If deactivated and activate command true.*)
         simDeactFail : BOOL; (*Simulates deactivation fail. If activated and deactivate command true.*)
     END_VAR
-    VAR_OUTPUT
+    VAR_OUTPUT 
         Activated : BOOL; (*TRUE: Device is activated*)
         Deactivated : BOOL; (*TRUE: Device is deactivated*)
     END_VAR
-    VAR
+    VAR 
         TransitionDelay : TON; (*Timer for delaying the commands to change state*)
         vState : USINT := 0; (*State tracking variable*)
         vStateOld : USINT := 3; (*Memory of previous state*)
@@ -54,9 +54,9 @@ END_FUNCTION_BLOCK
 
 ## Metrics  
 
-| VAR_IN | VAR_OUT | VAR_IN_OUT | VAR_LOCAL | VAR_EXTERNAL | VAR_TEMP |
-| ------ | ------- | ---------- | --------- | ------------ | -------- |
-| 6 | 2 | 0 | 3 | 0 | 0 |
+- VAR_INPUT : 6
+- VAR_OUTPUT : 2
+- VAR : 3
 
 | Actions | Lines of code | Maintainable size |
 | ------- | ------------- | ----------------- |

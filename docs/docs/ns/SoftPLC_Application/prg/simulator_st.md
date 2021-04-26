@@ -4,7 +4,7 @@
 
 ```pascal
 INTERFACE
-    VAR
+    VAR 
         vTankLevel : REAL := 25; (*Simulated tank level, intialized to 25%*)
         MixerMotor : GenericBistableDeviceModel; (*Simulated mixer motor*)
         MediumValve1 : GenericBistableDeviceModel; (*Simulated valve that fills medium 1*)
@@ -65,9 +65,7 @@ END_PROGRAM
 
 ## Metrics  
 
-| VAR_IN | VAR_OUT | VAR_IN_OUT | VAR_LOCAL | VAR_EXTERNAL | VAR_GLOBAL | VAR_ACCESS | VAR_TEMP |
-| ------ | ------- | ---------- | --------- | ------------ | ---------- | ---------- | -------- |
-| 0 | 0 | 0 | 6 | 0 | 0 | 0 | 0 |
+- VAR : 6
 
 | Actions | Lines of code | Maintainable size |
 | ------- | ------------- | ----------------- |

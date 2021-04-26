@@ -4,7 +4,7 @@
 
 ```pascal
 INTERFACE
-    VAR
+    VAR 
         vMode : MODES; (*Variable to keep track of system mode Manual/Auto*)
         vModeOld : MODES; (*Memory of last mode*)
         vAutoState : AUTO_SEQUENCE; (*Variable to track the automatic sequence*)
@@ -155,9 +155,7 @@ END_PROGRAM
 
 ## Metrics  
 
-| VAR_IN | VAR_OUT | VAR_IN_OUT | VAR_LOCAL | VAR_EXTERNAL | VAR_GLOBAL | VAR_ACCESS | VAR_TEMP |
-| ------ | ------- | ---------- | --------- | ------------ | ---------- | ---------- | -------- |
-| 0 | 0 | 0 | 4 | 0 | 0 | 0 | 0 |
+- VAR : 4
 
 | Actions | Lines of code | Maintainable size |
 | ------- | ------------- | ----------------- |
